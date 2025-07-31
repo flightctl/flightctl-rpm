@@ -1,0 +1,9 @@
+[flightctl]
+name=FlightCtl RPM Repository (EPEL)
+type=rpm-md
+baseurl=https://flightctl.github.io/flightctl-rpm/epel-9-$basearch/
+gpgcheck=1
+gpgkey=https://download.copr.fedorainfracloud.org/results/@redhat-et/flightctl/pubkey.gpg
+enabled=1
+enabled_metadata=1
+metadata_expire=1d
