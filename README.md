@@ -31,7 +31,7 @@ sudo dnf install flightctl-agent-0.8.1 flightctl-cli-0.8.1
 
 ## Available Versions
 
-0.5.1 0.7.1 0.7.2 0.8.1 
+0.5.1 0.7.1 0.7.2 0.8.0 0.8.1 
 
 ## Repository Structure
 
