@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FlightCtl RPMs - {{DISPLAY_NAME}}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../platform-styles.css">
+</head>
+<body>
+    <div class="header">
+        <a href="../" class="back-link">← Back to Repository</a>
+        <h1>FlightCtl RPMs - {{DISPLAY_NAME}}</h1>
+        <p>{{PLATFORM_RPMS}} packages available</p>
+    </div>
+
+    <div class="package-list">
+        <h2>Available Packages</h2>
+{{RPM_LIST}}
+    </div>
+
+    <div style="text-align: center; margin-top: 30px; color: #666; font-size: 0.9em;">
+        <p>Generated on {{TIMESTAMP}}</p>
+    </div>
+</body>
+</html>

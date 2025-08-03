@@ -24,27 +24,32 @@ sudo dnf install flightctl-agent flightctl-cli
 sudo dnf install flightctl-agent-0.8.1 flightctl-cli-0.8.1
 ```
 
-## Available Packages
-
-- **flightctl-agent**: FlightCtl agent for edge devices
-- **flightctl-cli**: FlightCtl command-line interface
-
-## Available Versions
-
-0.5.1 0.7.1 0.7.2 0.8.0 0.8.1 
-
-## Repository Structure
-
-This repository is automatically generated from COPR builds. Each platform directory contains:
-
-- RPM packages for that platform
-- Repository metadata (`repodata/`)
-- Platform-specific index page
-
 ## Updates
 
-This repository is automatically updated when new FlightCtl releases are published. PRs are created automatically and auto-merged after successful builds.
+This repository can be updated manually using GitHub Actions workflow.
 
-## Source
+### Manual Update
 
-Generated from: https://github.com/flightctl/flightctl
+To update the repository with a new FlightCtl version:
+
+```bash
+gh workflow run update-rpm-repo.yml --repo flightctl/flightctl-rpm -f version=0.8.1
+```
+
+Replace `0.8.1` with the desired version number.
+
+### Requirements
+
+- The specified version must already be available in the COPR repository
+- The workflow will download RPMs and update the repository structure
+- A branch will be created and pushed - you'll need to manually create the PR
+
+### After Running the Workflow
+
+The workflow will:
+1. Create a new branch with the updated content
+2. Push the branch to the repository
+3. Provide instructions for creating the PR manually
+
+You can then create the PR using the GitHub CLI command provided in the workflow output, or by visiting the GitHub compare URL.
+
