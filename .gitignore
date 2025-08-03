@@ -1,0 +1,6 @@
+.output/
+
+# AI setup
+.claude/
+.cursor/
+.serena/

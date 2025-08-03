@@ -1,0 +1,7 @@
+        <div class="rpm-item">
+            <div class="rpm-info">
+                <div class="rpm-name">{{PACKAGE_NAME}}</div>
+                <div class="rpm-version">Version {{VERSION}}</div>
+            </div>
+            <a href="{{RPM_FILE}}" class="download-link">Download</a>
+        </div>

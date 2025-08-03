@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FlightCtl RPM Repository</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="header">
+        <h1>🚁 FlightCtl RPM Repository</h1>
+        <p>Production-ready RPM packages for FlightCtl</p>
+    </div>
+
+    <div class="instructions">
+        <h2>Installation</h2>
+
+        <h3>EPEL (RHEL 9, CentOS Stream 9, Rocky Linux 9)</h3>
+        <div class="code-block">sudo dnf config-manager addrepo --from-repofile=https://flightctl.github.io/flightctl-rpm/flightctl-epel.repo<br />sudo dnf install flightctl-agent flightctl-cli</div>
+
+        <h3>Fedora</h3>
+        <div class="code-block">sudo dnf config-manager addrepo --from-repofile=https://flightctl.github.io/flightctl-rpm/flightctl-fedora.repo<br />sudo dnf install flightctl-agent flightctl-cli</div>
+
+        <h3>Install Specific Version</h3>
+        <div class="code-block">sudo dnf install flightctl-agent-{{LATEST_VERSION}} flightctl-cli-{{LATEST_VERSION}}</div>
+    </div>
+
+    <div class="stats">
+        <h3>Repository Overview</h3>
+        <p><strong>Available versions:</strong></p>
+        <div style="margin-top: 10px;">
+{{VERSION_BADGES}}
+        </div>
+        <p><strong>Packages:</strong> flightctl-agent, flightctl-cli</p>
+    </div>
+
+    <h2>Available Platforms</h2>
+    <div class="platforms">
+{{PLATFORM_CARDS}}
+    </div>
+
+    <div class="footer">
+        <p><strong>Last updated:</strong> {{TIMESTAMP}}</p>
+        <p><strong>Latest version:</strong> FlightCtl {{LATEST_VERSION}}</p>
+        <p><strong>Source:</strong> <a href="https://github.com/{{REPO_OWNER}}/{{REPO_NAME}}">{{REPO_OWNER}}/{{REPO_NAME}}</a></p>
+    </div>
+</body>
+</html>
