@@ -24,7 +24,7 @@ log() { echo -e "${BLUE}[INFO]${NC} $1"; }
 success() { echo -e "${GREEN}[SUCCESS]${NC} $1"; }
 error() { echo -e "${RED}[ERROR]${NC} $1"; }
 
-# Template substitution function using perl for better handling of special characters
+# Template substitution function using Python for safe string replacement
 substitute_template() {
     local template_file="$1"
     local output_file="$2"
@@ -39,8 +39,15 @@ substitute_template() {
         local key="${key_value%=*}"
         local value="${key_value#*=}"
         
-        # Use perl instead of sed for better special character handling
-        perl -i -pe "s/\\Q{{$key}}\\E/\Q$value\E/g" "$output_file"
+        # Use Python for safe string replacement (no regex issues)
+        python3 -c "
+import sys
+with open('$output_file', 'r') as f:
+    content = f.read()
+content = content.replace('{{$key}}', '''$value''')
+with open('$output_file', 'w') as f:
+    f.write(content)
+"
         shift
     done
 }
