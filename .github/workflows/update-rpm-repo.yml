@@ -91,15 +91,62 @@ jobs:
           # Run the repository creation script from flightctl-rpm directory  
           ./hack/create-rpm-repo.sh .output/copr-rpms-temp .output/repo-temp flightctl flightctl
           
-          # Move generated files to current directory
-          cp -r .output/repo-temp/* .
+          # Merge new RPMs with existing repository structure (preserve existing versions)
+          echo "Merging new RPMs with existing repository..."
+          for platform_dir in .output/repo-temp/*/; do
+            if [ -d "$platform_dir" ]; then
+              platform=$(basename "$platform_dir")
+              
+              # Skip non-platform directories
+              if [[ "$platform" == "repodata" ]] || [[ "$platform" == "templates" ]]; then
+                continue
+              fi
+              
+              # Create platform directory if it doesn't exist
+              mkdir -p "$platform"
+              
+              # Copy new RPMs to existing platform directory
+              find "$platform_dir" -name "*.rpm" -exec cp {} "$platform/" \;
+              echo "  Merged RPMs for $platform"
+            fi
+          done
+          
+          # Copy/update repository configuration files
+          cp .output/repo-temp/*.repo . 2>/dev/null || true
+          
+          # Update CSS files
+          cp .output/repo-temp/*.css . 2>/dev/null || true
+          
+          # Clean up temporary files
           rm -rf .output
 
-          echo "Repository structure created successfully!"
+          echo "Repository structure merged successfully!"
 
           # Verify structure
-          echo "Generated structure:"
+          echo "Current repository structure:"
           ls -la .
+          
+          # Show total RPMs per platform
+          for platform_dir in */; do
+            if [ -d "$platform_dir" ] && [[ "$platform_dir" != ".git/" ]] && [[ "$platform_dir" != ".github/" ]] && [[ "$platform_dir" != "hack/" ]] && [[ "$platform_dir" != "templates/" ]]; then
+              platform=${platform_dir%/}
+              rpm_count=$(find "$platform_dir" -name "*.rpm" | wc -l)
+              echo "  $platform: $rpm_count RPMs"
+            fi
+          done
+
+      - name: Regenerate HTML with all versions
+        run: |
+          set -euo pipefail
+          echo "=== Regenerating HTML files to include all versions ==="
+          
+          # Make the HTML regeneration script executable
+          chmod +x ./hack/regenerate-html.sh
+          
+          # Regenerate HTML files with all existing RPMs
+          ./hack/regenerate-html.sh
+          
+          echo "HTML files regenerated successfully!"
 
       - name: Create branch and commit changes
         run: |
