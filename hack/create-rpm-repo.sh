@@ -235,7 +235,7 @@ for platform_dir in "$REPO_OUTPUT_DIR"/*/; do
 
         # Create platform page from template
         # Use temporary files to pass complex content safely
-        local temp_rpm_list=$(mktemp)
+        temp_rpm_list=$(mktemp)
         printf '%s' "$rpm_list" > "$temp_rpm_list"
         
         substitute_template "$TEMPLATES_DIR/platform.html.template" "$platform_dir/index.html" \
