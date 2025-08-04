@@ -51,11 +51,17 @@ To update the repository with a new FlightCtl version:
 
    **To get the full workflow output:**
    ```bash
-   # View the workflow run details
+   # View the workflow run details and get the job ID
    gh run view --repo flightctl/flightctl-rpm
    
-   # Get the complete workflow log (replace JOB_ID with the actual job ID)
+   # Get the complete workflow log (replace JOB_ID with the job ID from above)
    gh run view --log --job=JOB_ID --repo flightctl/flightctl-rpm
+   ```
+   
+   Example:
+   ```bash
+   gh run view 16719137160 --repo flightctl/flightctl-rpm  # Shows job ID 47319307112
+   gh run view --log --job=47319307112 --repo flightctl/flightctl-rpm
    ```
    
    The log contains the complete `gh pr create` command ready to copy and execute.
