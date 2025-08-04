@@ -24,7 +24,7 @@ log() { echo -e "${BLUE}[INFO]${NC} $1"; }
 success() { echo -e "${GREEN}[SUCCESS]${NC} $1"; }
 error() { echo -e "${RED}[ERROR]${NC} $1"; }
 
-# Template substitution function
+# Template substitution function using temporary files for safe handling
 substitute_template() {
     local template_file="$1"
     local output_file="$2"
@@ -36,11 +36,40 @@ substitute_template() {
     # Apply substitutions passed as key=value pairs
     while [ $# -gt 0 ]; do
         local key_value="$1"
-        local key="${key_value%=*}"
+        # Extract key as everything before the first =
+        local key="${key_value%%=*}"
+        # Extract value as everything after the first =
         local value="${key_value#*=}"
-        # Escape special characters in value for sed
-        value=$(printf '%s\n' "$value" | sed 's/[[\.*^$()+?{|]/\\&/g')
-        sed -i "s|{{$key}}|$value|g" "$output_file"
+        
+        # Handle special case where value is a file reference
+        local temp_value_file
+        local cleanup_temp_file=false
+        if [[ "$key" == *"_FILE" ]]; then
+            # Key ends with _FILE, value is a file path to read from
+            temp_value_file="$value"
+            key="${key%_FILE}"  # Remove _FILE suffix from key
+        else
+            # Write value to temporary file to avoid shell escaping issues
+            temp_value_file=$(mktemp)
+            printf '%s' "$value" > "$temp_value_file"
+            cleanup_temp_file=true
+        fi
+        
+        # Use Python with file input for safe replacement
+        python3 -c "
+import sys
+with open('$output_file', 'r') as f:
+    content = f.read()
+with open('$temp_value_file', 'r') as f:
+    replacement_value = f.read()
+content = content.replace('{{$key}}', replacement_value)
+with open('$output_file', 'w') as f:
+    f.write(content)
+"
+        # Clean up temp file (only if we created it)
+        if [[ "$cleanup_temp_file" == "true" ]]; then
+            rm -f "$temp_value_file"
+        fi
         shift
     done
 }
@@ -205,11 +234,17 @@ for platform_dir in "$REPO_OUTPUT_DIR"/*/; do
         done < <(find "$platform_dir" -name "*.rpm" -exec basename {} \; | sort)
 
         # Create platform page from template
+        # Use temporary files to pass complex content safely
+        temp_rpm_list=$(mktemp)
+        printf '%s' "$rpm_list" > "$temp_rpm_list"
+        
         substitute_template "$TEMPLATES_DIR/platform.html.template" "$platform_dir/index.html" \
             "DISPLAY_NAME=$display_name" \
             "PLATFORM_RPMS=$platform_rpms" \
-            "RPM_LIST=$rpm_list" \
+            "RPM_LIST_FILE=$temp_rpm_list" \
             "TIMESTAMP=$(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+        
+        rm -f "$temp_rpm_list"
     fi
 done
 

@@ -12,7 +12,7 @@ on:
     types: [published]
 
 permissions:
-  contents: read
+  contents: write
   id-token: write
 
 jobs:
@@ -89,7 +89,11 @@ jobs:
           chmod +x ./hack/create-rpm-repo.sh
 
           # Run the repository creation script from flightctl-rpm directory  
-          ./hack/create-rpm-repo.sh .output/copr-rpms-temp . flightctl flightctl
+          ./hack/create-rpm-repo.sh .output/copr-rpms-temp .output/repo-temp flightctl flightctl
+          
+          # Move generated files to current directory
+          cp -r .output/repo-temp/* .
+          rm -rf .output
 
           echo "Repository structure created successfully!"
 
