@@ -20,12 +20,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout flightctl repository for COPR download script
-        uses: actions/checkout@v4
-        with:
-          repository: flightctl/flightctl
-          path: flightctl
-
       - name: Checkout this repository (flightctl-rpm)
         uses: actions/checkout@v4
 
@@ -61,7 +55,6 @@ jobs:
           echo "Final version: $VERSION"
 
       - name: Download RPMs from COPR
-        working-directory: flightctl
         run: |
           set -euo pipefail
           echo "=== Downloading RPMs using our script ==="
@@ -96,7 +89,7 @@ jobs:
           chmod +x ./hack/create-rpm-repo.sh
 
           # Run the repository creation script from flightctl-rpm directory  
-          ./hack/create-rpm-repo.sh flightctl/.output/copr-rpms-temp . flightctl flightctl
+          ./hack/create-rpm-repo.sh .output/copr-rpms-temp . flightctl flightctl
 
           echo "Repository structure created successfully!"
 
