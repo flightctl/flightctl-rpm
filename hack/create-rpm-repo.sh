@@ -105,7 +105,7 @@ mapfile -t _VERSIONS < <(
     rpm -qp --qf "%{VERSION}\n" "$1"
   ' _ {} \;
 )
-if command -v rpmdev-sort &>/dev/null; then
+if command -v rpmdev-sort &>/dev/null && printf '%s\n' "${_VERSIONS[@]}" | rpmdev-sort >/dev/null 2>&1; then
   LATEST_VERSION=$(printf '%s\n' "${_VERSIONS[@]}" | rpmdev-sort | tail -1)
 else
   LATEST_VERSION=$(printf '%s\n' "${_VERSIONS[@]}" | sort -V | tail -1)
@@ -171,7 +171,7 @@ mapfile -t _REPO_VERSIONS < <(
     rpm -qp --qf "%{VERSION}\n" "$1"
   ' _ {} \;
 )
-if command -v rpmdev-sort &>/dev/null; then
+if command -v rpmdev-sort &>/dev/null && printf '%s\n' "${_VERSIONS[@]}" | rpmdev-sort >/dev/null 2>&1; then
   versions=$(printf '%s\n' "${_REPO_VERSIONS[@]}" | rpmdev-sort | uniq | tr '\n' ' ')
 else
   versions=$(printf '%s\n' "${_REPO_VERSIONS[@]}" | sort -V | uniq | tr '\n' ' ')
