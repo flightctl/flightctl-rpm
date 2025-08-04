@@ -32,24 +32,43 @@ This repository can be updated manually using GitHub Actions workflow.
 
 To update the repository with a new FlightCtl version:
 
-```bash
-gh workflow run update-rpm-repo.yml --repo flightctl/flightctl-rpm -f version=0.8.1
-```
+1. **Start the workflow:**
+   ```bash
+   gh workflow run update-rpm-repo.yml --repo flightctl/flightctl-rpm -f version=0.8.1
+   ```
+   Replace `0.8.1` with the desired version number.
 
-Replace `0.8.1` with the desired version number.
+2. **Check workflow status:**
+   ```bash
+   gh run list --repo flightctl/flightctl-rpm --limit 1
+   ```
+   Wait for the status to show `completed success`. The workflow typically takes 1-2 minutes to complete.
+
+3. **After successful completion:**
+   - The workflow creates a new branch named `update-rpm-VERSION-TIMESTAMP`
+   - All RPM files, HTML pages, and repository metadata are updated
+   - The workflow output provides a GitHub CLI command to create the PR
+
+4. **Create the Pull Request:**
+   Use the command provided in the workflow output, which will look like:
+   ```bash
+   gh pr create \
+     --repo flightctl/flightctl-rpm \
+     --title 'Update RPM repository for FlightCtl 0.8.1' \
+     --head 'update-rpm-0.8.1-20240804-123456' \
+     --base main \
+     --body 'Updates RPM repository with FlightCtl version 0.8.1'
+   ```
+   
+   Or visit the GitHub compare URL provided in the workflow output.
+
+5. **Review and merge:**
+   - Review the PR to ensure all platforms and packages are updated correctly
+   - Merge the PR to make the new version available at https://flightctl.github.io/flightctl-rpm/
 
 ### Requirements
 
 - The specified version must already be available in the COPR repository
-- The workflow will download RPMs and update the repository structure
-- A branch will be created and pushed - you'll need to manually create the PR
-
-### After Running the Workflow
-
-The workflow will:
-1. Create a new branch with the updated content
-2. Push the branch to the repository
-3. Provide instructions for creating the PR manually
-
-You can then create the PR using the GitHub CLI command provided in the workflow output, or by visiting the GitHub compare URL.
+- You need `gh` CLI tool installed and authenticated
+- The workflow requires manual PR creation for safety
 
