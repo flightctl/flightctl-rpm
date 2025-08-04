@@ -42,7 +42,7 @@ To update the repository with a new FlightCtl version:
    ```bash
    gh run list --repo flightctl/flightctl-rpm --limit 1
    ```
-   Wait for the status to show `completed success`. The workflow typically takes 1-2 minutes to complete.
+   Wait for the status to show a green checkmark (✓) and `completed success`. The workflow typically takes 1-2 minutes to complete.
 
 3. **After successful completion:**
    - The workflow creates a new branch named `update-rpm-VERSION-TIMESTAMP`
