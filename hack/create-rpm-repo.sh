@@ -24,7 +24,7 @@ log() { echo -e "${BLUE}[INFO]${NC} $1"; }
 success() { echo -e "${GREEN}[SUCCESS]${NC} $1"; }
 error() { echo -e "${RED}[ERROR]${NC} $1"; }
 
-# Template substitution function
+# Template substitution function using perl for better handling of special characters
 substitute_template() {
     local template_file="$1"
     local output_file="$2"
@@ -38,9 +38,9 @@ substitute_template() {
         local key_value="$1"
         local key="${key_value%=*}"
         local value="${key_value#*=}"
-        # Escape special characters in value for sed (escape |, \, and &)
-        value=$(printf '%s\n' "$value" | sed 's/[|\\&]/\\&/g')
-        sed -i "s|{{$key}}|$value|g" "$output_file"
+        
+        # Use perl instead of sed for better special character handling
+        perl -i -pe "s/\\Q{{$key}}\\E/\Q$value\E/g" "$output_file"
         shift
     done
 }
