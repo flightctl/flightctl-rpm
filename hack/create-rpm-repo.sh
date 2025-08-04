@@ -24,7 +24,7 @@ log() { echo -e "${BLUE}[INFO]${NC} $1"; }
 success() { echo -e "${GREEN}[SUCCESS]${NC} $1"; }
 error() { echo -e "${RED}[ERROR]${NC} $1"; }
 
-# Template substitution function using Python for safe string replacement
+# Template substitution function using temporary files for safe handling
 substitute_template() {
     local template_file="$1"
     local output_file="$2"
@@ -39,15 +39,23 @@ substitute_template() {
         local key="${key_value%=*}"
         local value="${key_value#*=}"
         
-        # Use Python for safe string replacement (no regex issues)
+        # Write value to temporary file to avoid shell escaping issues
+        local temp_value_file=$(mktemp)
+        printf '%s' "$value" > "$temp_value_file"
+        
+        # Use Python with file input for safe replacement
         python3 -c "
 import sys
 with open('$output_file', 'r') as f:
     content = f.read()
-content = content.replace('{{$key}}', '''$value''')
+with open('$temp_value_file', 'r') as f:
+    replacement_value = f.read()
+content = content.replace('{{$key}}', replacement_value)
 with open('$output_file', 'w') as f:
     f.write(content)
 "
+        # Clean up temp file
+        rm -f "$temp_value_file"
         shift
     done
 }
