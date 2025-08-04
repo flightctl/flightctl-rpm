@@ -49,6 +49,17 @@ To update the repository with a new FlightCtl version:
    - All RPM files, HTML pages, and repository metadata are updated
    - The workflow output provides a GitHub CLI command to create the PR
 
+   **To get the full workflow output:**
+   ```bash
+   # View the workflow run details
+   gh run view --repo flightctl/flightctl-rpm
+   
+   # Get the complete workflow log (replace JOB_ID with the actual job ID)
+   gh run view --log --job=JOB_ID --repo flightctl/flightctl-rpm
+   ```
+   
+   The log contains the complete `gh pr create` command ready to copy and execute.
+
 4. **Create the Pull Request:**
    Use the command provided in the workflow output, which will look like:
    ```bash
