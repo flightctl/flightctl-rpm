@@ -38,8 +38,8 @@ substitute_template() {
         local key_value="$1"
         local key="${key_value%=*}"
         local value="${key_value#*=}"
-        # Escape special characters in value for sed
-        value=$(printf '%s\n' "$value" | sed 's/[[\.*^$()+?{|]/\\&/g')
+        # Escape special characters in value for sed (escape |, \, and &)
+        value=$(printf '%s\n' "$value" | sed 's/[|\\&]/\\&/g')
         sed -i "s|{{$key}}|$value|g" "$output_file"
         shift
     done
