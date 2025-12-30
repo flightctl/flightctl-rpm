@@ -115,13 +115,50 @@ for dir in $dirs; do
         files_in_dir=(epel fedora flightctl-epel.repo flightctl-fedora.repo)
     else
         shopt -s nullglob
+        # Collect all files, excluding index.html
+        temp_files=()
         for f in "$dir"/*; do
             f=("$(basename "$f")")
             if [[ $f == "index.html" ]]; then
                 continue
             fi
-            files_in_dir+=("$f")
+            temp_files+=("$f")
         done
+
+        # Sort and deduplicate files
+        # Directories first, then RPM files sorted by name
+        dirs=()
+        rpms=()
+        others=()
+
+        for f in "${temp_files[@]}"; do
+            if [[ -d "$dir/$f" ]]; then
+                dirs+=("$f")
+            elif [[ "$f" == *.rpm ]]; then
+                rpms+=("$f")
+            else
+                others+=("$f")
+            fi
+        done
+
+        # Sort each category and combine
+        if [[ ${#dirs[@]} -gt 0 ]]; then
+            IFS=$'\n' dirs=($(sort <<<"${dirs[*]}"))
+        fi
+        if [[ ${#rpms[@]} -gt 0 ]]; then
+            # Sort RPMs with version-aware sorting if available
+            if command -v rpmdev-sort &>/dev/null; then
+                IFS=$'\n' rpms=($(printf '%s\n' "${rpms[@]}" | rpmdev-sort))
+            else
+                IFS=$'\n' rpms=($(sort -V <<<"${rpms[*]}"))
+            fi
+        fi
+        if [[ ${#others[@]} -gt 0 ]]; then
+            IFS=$'\n' others=($(sort <<<"${others[*]}"))
+        fi
+
+        # Combine: directories first, then other files, then RPMs
+        files_in_dir=("${dirs[@]}" "${others[@]}" "${rpms[@]}")
     fi
 
     entries=""
