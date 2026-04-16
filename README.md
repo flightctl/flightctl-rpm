@@ -4,10 +4,17 @@ This repository contains RPM packages for the Flight Control project.
 
 ## Installation
 
-### EPEL (RHEL 9, CentOS Stream 9, Rocky Linux 9)
+### EPEL 9 (RHEL 9, CentOS Stream 9, Rocky Linux 9)
 
 ```bash
-sudo dnf config-manager --add-repo https://rpm.flightctl.io/flightctl-epel.repo
+sudo dnf config-manager --add-repo https://rpm.flightctl.io/flightctl-epel9.repo
+sudo dnf install flightctl-agent flightctl-cli
+```
+
+### EPEL 10 (RHEL 10, CentOS Stream 10, Rocky Linux 10)
+
+```bash
+sudo dnf config-manager addrepo --from-repofile=https://rpm.flightctl.io/flightctl-epel10.repo
 sudo dnf install flightctl-agent flightctl-cli
 ```
 
