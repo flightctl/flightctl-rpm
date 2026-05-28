@@ -28,25 +28,27 @@
         </tr>
         <tr class="dir-table-row">
             <td class="dir-table-data-name"><a href="epel">epel/</a></td>
-            <td class="dir-table-data-mtime">2026-05-27 18:08</td>
+            <td class="dir-table-data-mtime">2026-05-28 14:50</td>
             <td class="dir-table-data-size">--</td>
         </tr>        <tr class="dir-table-row">
             <td class="dir-table-data-name"><a href="fedora">fedora/</a></td>
-            <td class="dir-table-data-mtime">2026-05-27 18:09</td>
+            <td class="dir-table-data-mtime">2026-05-28 14:50</td>
             <td class="dir-table-data-size">--</td>
         </tr>        <tr class="dir-table-row">
             <td class="dir-table-data-name"><a href="flightctl-epel.repo">flightctl-epel.repo</a></td>
-            <td class="dir-table-data-mtime">2026-05-27 18:06</td>
+            <td class="dir-table-data-mtime">2026-04-16 15:52</td>
             <td class="dir-table-data-size">4.0K</td>
         </tr>        <tr class="dir-table-row">
             <td class="dir-table-data-name"><a href="flightctl-fedora.repo">flightctl-fedora.repo</a></td>
-            <td class="dir-table-data-mtime">2026-05-27 18:06</td>
+            <td class="dir-table-data-mtime">2026-04-16 15:52</td>
             <td class="dir-table-data-size">4.0K</td>
         </tr>
     </table>
     <h2>Installation</h2>
-    <h3>EPEL (RHEL 9, CentOS Stream 9, Rocky Linux 9)</h3>
-    <div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#000000;--prism-background-color:#ffffff"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#000000;background-color:#ffffff"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#000000"><span class="token plain">sudo dnf config-manager --add-repo https://rpm.flightctl.io/flightctl-epel.repo<br />sudo dnf install flightctl-cli</span><br></span></code></pre></div></div>
+    <h3>EPEL 9 (RHEL 9, CentOS Stream 9, Rocky Linux 9)</h3>
+    <div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#000000;--prism-background-color:#ffffff"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#000000;background-color:#ffffff"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#000000"><span class="token plain">sudo dnf config-manager --add-repo https://rpm.flightctl.io/flightctl-epel9.repo<br />sudo dnf install flightctl-cli</span><br></span></code></pre></div></div>
+    <h3>EPEL 10 (RHEL 10, CentOS Stream 10, Rocky Linux 10)</h3>
+    <div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#000000;--prism-background-color:#ffffff"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#000000;background-color:#ffffff"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#000000"><span class="token plain">sudo dnf config-manager addrepo --from-repofile=https://rpm.flightctl.io/flightctl-epel10.repo<br />sudo dnf install flightctl-cli</span><br></span></code></pre></div></div>
     <h3>Fedora</h3>
     <div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#000000;--prism-background-color:#ffffff"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#000000;background-color:#ffffff"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#000000"><span class="token plain">sudo dnf config-manager addrepo --from-repofile=https://rpm.flightctl.io/flightctl-fedora.repo<br />sudo dnf install flightctl-cli</span><br></span></code></pre></div></div>
     <h3>Installing a specific version</h3>

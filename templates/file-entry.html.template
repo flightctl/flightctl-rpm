@@ -1,5 +1,5 @@
         <tr class="dir-table-row">
-            <td class="dir-table-data-name"><a href="{{NAME}}">{{NAME}}</a></td>
+            <td class="dir-table-data-name"><a href="{{HREF}}">{{NAME}}</a></td>
             <td class="dir-table-data-mtime">{{LAST_MODIFIED}}</td>
             <td class="dir-table-data-size">{{SIZE}}</td>
         </tr>

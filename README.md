@@ -1,6 +1,8 @@
 # Flight Control RPM Repository
 
-This repository contains RPM packages for the Flight Control project.
+RPM repository for the Flight Control project. Repository metadata is served
+via GitHub Pages at https://rpm.flightctl.io, while RPM packages are stored as
+GitHub Release assets and downloaded directly by DNF.
 
 ## Installation
 
@@ -28,71 +30,97 @@ sudo dnf install flightctl-agent flightctl-cli
 ### Install Specific Version
 
 ```bash
-sudo dnf install flightctl-agent-0.8.1 flightctl-cli-0.8.1
+sudo dnf install flightctl-agent-1.1.2 flightctl-cli-1.1.2
 ```
+
+## Architecture
+
+This repository uses a split storage model to avoid committing large RPM
+binaries to git while still providing a fully functional DNF repository.
+
+### How it works
+
+1. **GitHub Pages** (https://rpm.flightctl.io) serves DNF repository metadata
+   (`repodata/`) and HTML index pages. This is the `baseurl` in the `.repo` files.
+2. **GitHub Releases** store the actual RPM packages as release assets. Each
+   release tag (e.g. `v1.2.0`) contains all RPMs for that version across all
+   platforms and architectures.
+3. When DNF resolves a package, it reads `repodata/primary.xml.gz` from GitHub
+   Pages. Each package's `<location href>` points directly to its GitHub Release
+   download URL, so DNF fetches the full RPM from there — GitHub Pages never
+   serves the RPM binary itself.
+
+### Stub RPMs
+
+An RPM file consists of a lead, signature header, main header, and a compressed
+cpio payload. Tools like `createrepo_c` only read the headers to generate
+repository metadata — the payload is never inspected.
+
+**Stub RPMs** are RPMs with the payload stripped off, leaving only the lead and
+headers (~15KB instead of 7–22MB). They are stored in `rpm-stubs/` and serve
+two purposes:
+
+- **Metadata generation**: `createrepo_c` runs against the stubs to produce
+  correct `primary.xml`, `filelists.xml`, and `other.xml`. Three fields that
+  `createrepo_c` computes from the file on disk (checksum, size, location href)
+  are then corrected using values from `rpm-manifest.json`.
+- **Reproducibility**: since every package version has a stub committed to git,
+  `regenerate-rpm-repo.py` can always rebuild the complete repodata from scratch.
+  There is no incremental state to get out of sync.
+
+Each `rpm-stubs/{arch}/rpm-manifest.json` maps the stub filename to the real
+RPM's sha256, size, and GitHub Release download URL. This is the source of truth
+for the post-processing step.
+
+Stubs are excluded from GitHub Pages via `.jekyllignore` — they exist only for
+metadata generation and are never served to end users.
+
+### Why this approach
+
+- **Git repo size**: committing full RPMs grew the repository to ~11GB. Stubs
+  reduce new-version commits to ~100KB instead of ~50–100MB of binaries.
+- **No retention policy**: GitHub Releases have no expiration, unlike some
+  artifact storage. Packages remain available indefinitely.
+- **Full rebuild from scratch**: because stubs for every version are committed,
+  repodata can be regenerated at any time without needing the original RPMs.
+- **Standard DNF workflow**: end users install packages with `dnf install` as
+  usual — the redirect to GitHub Releases is transparent.
 
 ## Updates
 
-This repository can be updated manually using GitHub Actions workflow.
+New releases are added via the GitHub Actions workflow, triggered manually
+via `workflow_dispatch`.
 
 ### Manual Update
 
-To update the repository with a new Flight Control version:
-
 1. **Start the workflow:**
    ```bash
-   gh workflow run update-rpm-repo.yml --repo flightctl/flightctl-rpm -f version=0.8.1
+   gh workflow run update-rpm-repo.yml --repo flightctl/flightctl-rpm -f version=1.2.0
    ```
-   Replace `0.8.1` with the desired version number.
 
 2. **Check workflow status:**
    ```bash
    gh run list --repo flightctl/flightctl-rpm --limit 1
    ```
-   Wait for the status to show a green checkmark (✓) and `completed success`. The workflow typically takes 1-2 minutes to complete.
 
 3. **After successful completion:**
-   - The workflow creates a new branch named `update-rpm-VERSION-TIMESTAMP`
-   - All RPM files, HTML pages, and repository metadata are updated
-   - The workflow output provides a GitHub CLI command to create the PR
+   - RPMs are downloaded from COPR and uploaded to a GitHub Release
+   - Payload-stripped stubs and manifest are created in `rpm-stubs/`
+   - Repository metadata is regenerated from all stubs
+   - HTML index pages are rebuilt
+   - A branch is created with the changes
 
-   **To get the full workflow output:**
-   ```bash
-   # View the workflow run details and get the job ID
-   gh run view --repo flightctl/flightctl-rpm
-   
-   # Get the complete workflow log (replace JOB_ID with the job ID from above)
-   gh run view --log --job=JOB_ID --repo flightctl/flightctl-rpm
-   ```
-   
-   Example:
-   ```bash
-   gh run view 16719137160 --repo flightctl/flightctl-rpm  # Shows job ID 47319307112
-   gh run view --log --job=47319307112 --repo flightctl/flightctl-rpm
-   ```
-   
-   The log contains the complete `gh pr create` command ready to copy and execute.
-
-4. **Create the Pull Request:**
-   Use the command provided in the workflow output, which will look like:
-   ```bash
-   gh pr create \
-     --repo flightctl/flightctl-rpm \
-     --title 'Update RPM repository for FlightCtl 0.8.1' \
-     --head 'update-rpm-0.8.1-20240804-123456' \
-     --base main \
-     --body 'Updates RPM repository with FlightCtl version 0.8.1'
-   ```
-   
-   Or visit the GitHub compare URL provided in the workflow output.
-
-5. **Review and merge:**
-   - Review the PR to ensure all platforms and packages are updated correctly
-   - Merge the PR to make the new version available at https://flightctl.github.io/flightctl-rpm/
+4. **Create and merge the Pull Request** from the workflow output to publish.
 
 ### Requirements
 
 - The specified version must already be available in the COPR repository
 - You need `gh` CLI tool installed and authenticated
 - The workflow requires manual PR creation for safety
+
+## Repository Scripts
+
+- `hack/add-release-stubs.py` — creates stubs and updates manifests for a new release
+- `hack/regenerate-rpm-repo.py` — regenerates all repodata from stubs via `createrepo_c`
+- `hack/regenerate-html.sh` — rebuilds HTML index pages from repodata
 
