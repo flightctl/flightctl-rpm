@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version to download (e.g., 0.8.0, v0.8.0-rc2)'
+        description: 'Version to download (e.g., 1.2.0 or v1.2.0-rc1)'
         required: true
         type: string
 
@@ -28,7 +28,7 @@ jobs:
           set -euo pipefail
           echo "=== Installing dependencies ==="
           sudo apt-get update
-          sudo apt-get install -y createrepo-c curl jq python3-pip git-restore-mtime
+          sudo apt-get install -y createrepo-c curl jq python3-pip git-restore-mtime rpm python3-rpm
           pip3 install copr-cli
 
           echo "Installed versions:"
@@ -39,41 +39,40 @@ jobs:
       - name: Restore mtime of files
         run: git restore-mtime
 
-      - name: Determine version to download
+      - name: Determine version and release tag
         id: version
         run: |
           set -euo pipefail
           if [ "${{ github.event_name }}" = "release" ]; then
-            VERSION="${{ github.event.release.tag_name }}"
-            echo "Using release tag: $VERSION"
+            INPUT="${{ github.event.release.tag_name }}"
           elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            VERSION="${{ github.event.inputs.version }}"
-            echo "Using manual input: $VERSION"
+            INPUT="${{ github.event.inputs.version }}"
           else
             echo "[ERROR] Unsupported event type: ${{ github.event_name }}"
             exit 1
           fi
 
+          # Strip leading 'v' for COPR download script
+          VERSION="${INPUT#v}"
           echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "Final version: $VERSION"
+
+          # Build GitHub Release tag: always 'v' + version with ~ replaced by -
+          RELEASE_TAG="v${VERSION//\~/-}"
+          # Also handle input that already used hyphens for rc (e.g. v1.2.0-rc1)
+          RELEASE_TAG="${RELEASE_TAG//-rc/-rc}"  # no-op, keeps hyphens
+          echo "release_tag=$RELEASE_TAG" >> $GITHUB_OUTPUT
+
+          echo "Version: $VERSION"
+          echo "Release tag: $RELEASE_TAG"
 
       - name: Download RPMs from COPR
         run: |
           set -euo pipefail
-          echo "=== Downloading RPMs using our script ==="
+          echo "=== Downloading RPMs from COPR ==="
           VERSION="${{ steps.version.outputs.version }}"
 
-          echo "Running: ./hack/copr-to-gh_pages-download.sh $VERSION"
-
-          # Make script executable and run it
           chmod +x ./hack/copr-to-gh_pages-download.sh
           ./hack/copr-to-gh_pages-download.sh "$VERSION"
-
-          echo "Script completed successfully!"
-
-          # Verify what we downloaded
-          echo "Downloaded content:"
-          ls -la .output/copr-rpms-temp/
 
           total_rpms=$(find .output/copr-rpms-temp -name "*.rpm" | wc -l)
           echo "Total RPMs downloaded: $total_rpms"
@@ -83,49 +82,78 @@ jobs:
             exit 1
           fi
 
-      - name: Merge downloaded RPMs into the existing repository structure
+      - name: Upload RPMs to GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          echo "=== Merging downloaded RPMs into the existing repository structure ==="
+          RELEASE_TAG="${{ steps.version.outputs.release_tag }}"
+          VERSION="${{ steps.version.outputs.version }}"
+          REPO="flightctl/flightctl-rpm"
 
-          # Make the script executable
-          chmod +x ./hack/merge-rpms-into-repo.sh
+          # Deduplicate by filename (noarch packages appear in multiple chroot dirs)
+          mapfile -t RPMS < <(
+            find .output/copr-rpms-temp -name "*.rpm" | sort \
+              | awk -F/ '!seen[$(NF)]++'
+          )
 
-          # Run the scrtipt to merge new RPMs into existing repo structure
-          ./hack/merge-rpms-into-repo.sh .output/copr-rpms-temp
-          
-          # Clean up temporary files
+          echo "=== Uploading ${#RPMS[@]} RPMs to GitHub Release $RELEASE_TAG ==="
+
+          if ! gh release view "$RELEASE_TAG" --repo "$REPO" &>/dev/null; then
+            echo "Creating release $RELEASE_TAG..."
+            gh release create "$RELEASE_TAG" \
+              --repo "$REPO" \
+              --title "FlightCtl $VERSION" \
+              --notes "FlightCtl ${VERSION} packages for EPEL 9, EPEL 10, Fedora 41, 42, 43 (x86_64 and aarch64)." \
+              "${RPMS[@]}"
+          else
+            echo "Release $RELEASE_TAG already exists — uploading missing assets..."
+            EXISTING=$(gh release view "$RELEASE_TAG" --repo "$REPO" \
+              --json assets --jq '.assets[].name')
+
+            MISSING=()
+            for rpm in "${RPMS[@]}"; do
+              gh_name="$(basename "$rpm" | tr '~' '.')"
+              if ! echo "$EXISTING" | grep -qxF "$gh_name"; then
+                MISSING+=("$rpm")
+              fi
+            done
+
+            if [ "${#MISSING[@]}" -gt 0 ]; then
+              gh release upload "$RELEASE_TAG" "${MISSING[@]}" --repo "$REPO"
+              echo "Uploaded ${#MISSING[@]} new asset(s)."
+            else
+              echo "All assets already present, nothing to upload."
+            fi
+          fi
+
+      - name: Create stubs and update manifest
+        run: |
+          set -euo pipefail
+          echo "=== Creating stubs and updating manifest ==="
+
+          python3 ./hack/add-release-stubs.py \
+            --rpms-dir .output/copr-rpms-temp \
+            --release-tag "${{ steps.version.outputs.release_tag }}"
+
+          # Full RPMs are now in the GitHub Release — no longer needed locally
           rm -rf .output
 
-          echo "RPMs merged successfully!"
+          echo "Stubs created successfully!"
 
-          # Verify structure
-          echo "Current repository structure:"
-          ls -la .
-          
-          # Show total RPMs per platform
-          for platform_dir in */; do
-            if [ -d "$platform_dir" ] && [[ "$platform_dir" != ".git/" ]] && [[ "$platform_dir" != ".github/" ]] && [[ "$platform_dir" != "hack/" ]] && [[ "$platform_dir" != "templates/" ]]; then
-              platform=${platform_dir%/}
-              rpm_count=$(find "$platform_dir" -name "*.rpm" | wc -l)
-              echo "  $platform: $rpm_count RPMs"
-            fi
-          done
-
-      - name: Regenerate RPM repository metadata
-        run: hack/regenerate-rpm-repo.sh
+      - name: Regenerate repo metadata from stubs
+        run: |
+          set -euo pipefail
+          echo "=== Regenerating repo metadata ==="
+          python3 ./hack/regenerate-rpm-repo.py
+          echo "Repo metadata regenerated successfully!"
 
       - name: Regenerate HTML with all versions
         run: |
           set -euo pipefail
-          echo "=== Regenerating HTML files to include all versions ==="
-          
-          # Make the HTML regeneration script executable
+          echo "=== Regenerating HTML files ==="
           chmod +x ./hack/regenerate-html.sh
-          
-          # Regenerate HTML files with all existing RPMs
           ./hack/regenerate-html.sh
-          
           echo "HTML files regenerated successfully!"
 
       - name: Create branch and commit changes
@@ -133,100 +161,83 @@ jobs:
           set -euo pipefail
           echo "=== Creating update branch ==="
           VERSION="${{ steps.version.outputs.version }}"
-          BRANCH_NAME="update-rpm-$VERSION-$(date +%Y%m%d-%H%M%S)"
+          RELEASE_TAG="${{ steps.version.outputs.release_tag }}"
+          BRANCH_NAME="update-rpm-${RELEASE_TAG}-$(date +%Y%m%d-%H%M%S)"
 
-          # Configure git
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          # Create and switch to new branch
           git checkout -b "$BRANCH_NAME"
 
-          # Add all changes
-          git add .
+          # Stage stubs, manifests, repodata, and HTML — never commit full RPM binaries
+          git add '*.rpm' '*/rpm-manifest.json' '*/repodata/' '*.html' '*.repo'
 
-          # Check if there are changes to commit
           if git diff --staged --quiet; then
             echo "[INFO] No changes detected"
             echo "skip_pr=true" >> $GITHUB_ENV
           else
-            echo "[INFO] Changes detected, preparing commit..."
+            echo "[INFO] Changes detected, committing..."
             echo "branch_name=$BRANCH_NAME" >> $GITHUB_ENV
             echo "skip_pr=false" >> $GITHUB_ENV
 
-            # Commit changes
-            git commit -m "Update RPM repository for FlightCtl $VERSION" -m "- Add/update RPM packages for version $VERSION" -m "- Update repository metadata" -m "- Auto-generated from flightctl/flightctl workflow" -m "" -m "Co-authored-by: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
+            git commit -m "Update RPM repository for FlightCtl $VERSION" \
+              -m "- Update repodata metadata for version $VERSION" \
+              -m "- Packages served from GitHub Release $RELEASE_TAG" \
+              -m "- Update HTML index pages" \
+              -m "" \
+              -m "Co-authored-by: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
 
-            # Push branch
             git push origin "$BRANCH_NAME"
             echo "[SUCCESS] Pushed branch $BRANCH_NAME"
-            echo "[INFO] Branch ready for manual PR creation: $BRANCH_NAME"
           fi
 
       - name: Provide PR creation instructions
         if: env.skip_pr == 'false'
         run: |
           set -euo pipefail
-          echo "=== Pull Request Instructions ==="
           VERSION="${{ steps.version.outputs.version }}"
+          RELEASE_TAG="${{ steps.version.outputs.release_tag }}"
           BRANCH_NAME="${{ env.branch_name }}"
 
           echo ""
-          echo "🎉 Branch $BRANCH_NAME has been created and pushed!"
+          echo "Branch $BRANCH_NAME has been created and pushed!"
           echo ""
-          echo "To create a Pull Request manually, run:"
+          echo "To create a Pull Request:"
           echo ""
           echo "gh pr create \\"
           echo "  --repo flightctl/flightctl-rpm \\"
           echo "  --title 'Update RPM repository for FlightCtl $VERSION' \\"
           echo "  --head '$BRANCH_NAME' \\"
           echo "  --base main \\"
-          echo "  --body 'Updates RPM repository with FlightCtl version $VERSION'"
+          echo "  --body 'Updates RPM repository metadata for FlightCtl version $VERSION. Packages served from GitHub Release $RELEASE_TAG.'"
           echo ""
           echo "Or visit: https://github.com/flightctl/flightctl-rpm/compare/main...$BRANCH_NAME"
-          echo ""
-          echo "Branch contains:"
-          echo "• Updated RPM packages for version $VERSION"
-          echo "• Refreshed repository metadata"
-          echo "• Updated HTML index pages"
-          echo "• Updated CSS stylesheets"
-
 
       - name: Create deployment summary
         run: |
           set -euo pipefail
+          VERSION="${{ steps.version.outputs.version }}"
+          RELEASE_TAG="${{ steps.version.outputs.release_tag }}"
+
           echo "## FlightCtl RPM Repository Update" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "- Version: ${{ steps.version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
-          echo "- Repository: [flightctl/flightctl-rpm](https://github.com/flightctl/flightctl-rpm)" >> $GITHUB_STEP_SUMMARY
-          echo "- Trigger: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Version:** $VERSION" >> $GITHUB_STEP_SUMMARY
+          echo "- **Release tag:** [$RELEASE_TAG](https://github.com/flightctl/flightctl-rpm/releases/tag/$RELEASE_TAG)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Trigger:** ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
 
-          if [ "${{ env.skip_pr }}" = "false" ]; then
-            echo "- Branch Created: \`${{ env.branch_name }}\`" >> $GITHUB_STEP_SUMMARY
-            echo "- Status: Ready for manual PR creation" >> $GITHUB_STEP_SUMMARY
+          if [ "${skip_pr:-false}" = "false" ]; then
+            echo "- **Branch:** \`${{ env.branch_name }}\`" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
-            echo "### 📝 Create PR:" >> $GITHUB_STEP_SUMMARY
+            echo "### Create PR" >> $GITHUB_STEP_SUMMARY
             echo '```bash' >> $GITHUB_STEP_SUMMARY
-            echo "gh pr create --repo flightctl/flightctl-rpm --title 'Update RPM repository for FlightCtl ${{ steps.version.outputs.version }}' --head '${{ env.branch_name }}' --base main --body 'Updates RPM repository with FlightCtl version ${{ steps.version.outputs.version }}'" >> $GITHUB_STEP_SUMMARY
+            echo "gh pr create --repo flightctl/flightctl-rpm --title 'Update RPM repository for FlightCtl $VERSION' --head '${{ env.branch_name }}' --base main" >> $GITHUB_STEP_SUMMARY
             echo '```' >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "Or visit: [Create PR](https://github.com/flightctl/flightctl-rpm/compare/main...${{ env.branch_name }})" >> $GITHUB_STEP_SUMMARY
           else
-            echo "- Status: No changes detected, no branch created" >> $GITHUB_STEP_SUMMARY
+            echo "- **Status:** No changes detected" >> $GITHUB_STEP_SUMMARY
           fi
 
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### Available Platforms:" >> $GITHUB_STEP_SUMMARY
-          for platform_dir in */; do
-            if [ -d "$platform_dir" ] && [[ "$platform_dir" != ".git/" ]] && [[ "$platform_dir" != ".github/" ]] && [[ "$platform_dir" != "hack/" ]] && [[ "$platform_dir" != "templates/" ]]; then
-              platform=${platform_dir%/}
-              rpm_count=$(find "$platform_dir" -name "*.rpm" | wc -l)
-              echo "- $platform: $rpm_count RPMs" >> $GITHUB_STEP_SUMMARY
-            fi
-          done
-
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### 🔧 Installation:" >> $GITHUB_STEP_SUMMARY
+          echo "### Installation" >> $GITHUB_STEP_SUMMARY
           echo '```bash' >> $GITHUB_STEP_SUMMARY
           echo "# EPEL" >> $GITHUB_STEP_SUMMARY
           echo "sudo dnf config-manager addrepo --from-repofile=https://flightctl.github.io/flightctl-rpm/flightctl-epel.repo" >> $GITHUB_STEP_SUMMARY
@@ -234,7 +245,5 @@ jobs:
           echo "# Fedora" >> $GITHUB_STEP_SUMMARY
           echo "sudo dnf config-manager addrepo --from-repofile=https://flightctl.github.io/flightctl-rpm/flightctl-fedora.repo" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "# Install packages" >> $GITHUB_STEP_SUMMARY
           echo "sudo dnf install flightctl-agent flightctl-cli" >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
-
