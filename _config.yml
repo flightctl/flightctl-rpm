@@ -1,0 +1,5 @@
+# Directories excluded from the Jekyll build and GitHub Pages deployment.
+exclude:
+  - rpm-stubs
+  - hack
+  - templates
