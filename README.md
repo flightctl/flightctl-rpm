@@ -35,19 +35,61 @@ sudo dnf install flightctl-agent-1.1.2 flightctl-cli-1.1.2
 
 ## Architecture
 
-This repository uses a split storage model:
+This repository uses a split storage model to avoid committing large RPM
+binaries to git while still providing a fully functional DNF repository.
 
-- **GitHub Pages** serves DNF repository metadata (`repodata/`) and HTML index pages
-- **GitHub Releases** store the actual RPM packages as release assets
-- **`rpm-stubs/`** contains payload-stripped stub RPMs (~15KB each) used by `createrepo_c` to generate metadata; these are excluded from GitHub Pages via `.jekyllignore`
-- **`rpm-stubs/*/rpm-manifest.json`** maps each stub to the real RPM's sha256, size, and GitHub Release download URL
+### How it works
 
-When DNF resolves a package, it reads the metadata from GitHub Pages, then downloads the full RPM directly from the GitHub Release URL in the `<location href>`.
+1. **GitHub Pages** (https://rpm.flightctl.io) serves DNF repository metadata
+   (`repodata/`) and HTML index pages. This is the `baseurl` in the `.repo` files.
+2. **GitHub Releases** store the actual RPM packages as release assets. Each
+   release tag (e.g. `v1.2.0`) contains all RPMs for that version across all
+   platforms and architectures.
+3. When DNF resolves a package, it reads `repodata/primary.xml.gz` from GitHub
+   Pages. Each package's `<location href>` points directly to its GitHub Release
+   download URL, so DNF fetches the full RPM from there — GitHub Pages never
+   serves the RPM binary itself.
+
+### Stub RPMs
+
+An RPM file consists of a lead, signature header, main header, and a compressed
+cpio payload. Tools like `createrepo_c` only read the headers to generate
+repository metadata — the payload is never inspected.
+
+**Stub RPMs** are RPMs with the payload stripped off, leaving only the lead and
+headers (~15KB instead of 7–22MB). They are stored in `rpm-stubs/` and serve
+two purposes:
+
+- **Metadata generation**: `createrepo_c` runs against the stubs to produce
+  correct `primary.xml`, `filelists.xml`, and `other.xml`. Three fields that
+  `createrepo_c` computes from the file on disk (checksum, size, location href)
+  are then corrected using values from `rpm-manifest.json`.
+- **Reproducibility**: since every package version has a stub committed to git,
+  `regenerate-rpm-repo.py` can always rebuild the complete repodata from scratch.
+  There is no incremental state to get out of sync.
+
+Each `rpm-stubs/{arch}/rpm-manifest.json` maps the stub filename to the real
+RPM's sha256, size, and GitHub Release download URL. This is the source of truth
+for the post-processing step.
+
+Stubs are excluded from GitHub Pages via `.jekyllignore` — they exist only for
+metadata generation and are never served to end users.
+
+### Why this approach
+
+- **Git repo size**: committing full RPMs grew the repository to ~11GB. Stubs
+  reduce new-version commits to ~100KB instead of ~50–100MB of binaries.
+- **No retention policy**: GitHub Releases have no expiration, unlike some
+  artifact storage. Packages remain available indefinitely.
+- **Full rebuild from scratch**: because stubs for every version are committed,
+  repodata can be regenerated at any time without needing the original RPMs.
+- **Standard DNF workflow**: end users install packages with `dnf install` as
+  usual — the redirect to GitHub Releases is transparent.
 
 ## Updates
 
-New releases are added via the GitHub Actions workflow, triggered automatically
-on release publication or manually via `workflow_dispatch`.
+New releases are added via the GitHub Actions workflow, triggered manually
+via `workflow_dispatch`.
 
 ### Manual Update
 
