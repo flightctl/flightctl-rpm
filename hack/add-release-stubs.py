@@ -14,6 +14,7 @@ Usage:
 import argparse
 import hashlib
 import json
+import urllib.request
 import rpm as librpm
 from pathlib import Path
 
@@ -106,6 +107,45 @@ def main():
         manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n")
         print(f"  Updated manifest ({len(manifest)} total entries).")
 
+    # Noarch packages (e.g. flightctl-selinux) appear in multiple COPR chroot
+    # directories with slightly different builds. The upload step deduplicates
+    # by filename, so the asset on the release may differ from the local copy
+    # we just hashed. Download each asset and correct any mismatches.
+    print("\nVerifying manifests against GitHub Release assets...")
+    verified = 0
+    fixed = 0
+    seen_urls = {}
+
+    for manifest_path in sorted(stubs_root.rglob(MANIFEST_FILE)):
+        manifest = json.loads(manifest_path.read_text())
+        changed = False
+
+        for filename, entry in sorted(manifest.items()):
+            # Only verify entries from this release
+            if not entry["href"].startswith(f"{GITHUB_RELEASES_BASE}/{args.release_tag}/"):
+                continue
+
+            href = entry["href"]
+            if href in seen_urls:
+                actual_sha, actual_size = seen_urls[href]
+            else:
+                with urllib.request.urlopen(href, timeout=60) as resp:
+                    data = resp.read()
+                actual_sha = hashlib.sha256(data).hexdigest()
+                actual_size = len(data)
+                seen_urls[href] = (actual_sha, actual_size)
+
+            if entry["sha256"] != actual_sha or entry["size"] != actual_size:
+                entry["sha256"] = actual_sha
+                entry["size"] = actual_size
+                changed = True
+                fixed += 1
+            verified += 1
+
+        if changed:
+            manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n")
+
+    print(f"  Verified {verified} entries, fixed {fixed} mismatches.")
     print("\nDone. Run regenerate-rpm-repo.py to rebuild repodata.")
 
 

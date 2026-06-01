@@ -256,78 +256,78 @@
   },
   "flightctl-selinux-0.10.0-1.fc43.noarch.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v0.10.0/flightctl-selinux-0.10.0-1.fc43.noarch.rpm",
-    "sha256": "4305aa06039ee1735885160bb2edc43f279bdbb2eee26ebe6c6b4f8611ebc642",
-    "size": 24591
+    "sha256": "d5d93db53557e37f37316f3aab2967cecdc0a1fb1d6d13b60ec071425aeb84f3",
+    "size": 24555
   },
   "flightctl-selinux-0.9.3-1.1.fc43.noarch.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v0.9.3/flightctl-selinux-0.9.3-1.1.fc43.noarch.rpm",
-    "sha256": "491578596f4824f576166287888106f04a470dc78958e77215a2aca399ae91d9",
-    "size": 36753
+    "sha256": "3dc5175fb70f12a5a94b2933427bf23f54abb504c3eaa9be48561d9d807bf0ae",
+    "size": 36717
   },
   "flightctl-selinux-1.0.0-1.fc43.noarch.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.0.0/flightctl-selinux-1.0.0-1.fc43.noarch.rpm",
-    "sha256": "8d244ea3aa752dd04e409fa744fb9253c1e89c1782bac72074e4d834b4a5e550",
-    "size": 24548
+    "sha256": "231e44e433d152f8d242636d754ba6b8e48bcbc18854ac8db4286d1e5a03f703",
+    "size": 24512
   },
   "flightctl-selinux-1.0.1-1.fc43.noarch.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.0.1/flightctl-selinux-1.0.1-1.fc43.noarch.rpm",
-    "sha256": "5bca277c0ab255550229ce19abe240060611eab9eb9ce735420ae92be0129c5a",
-    "size": 24548
+    "sha256": "b098204fa6f45053255c19c860da64c4d57047b90fbb96fe949c32c7ca8b0d4b",
+    "size": 24512
   },
   "flightctl-selinux-1.0.2-1.fc43.noarch.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.0.2/flightctl-selinux-1.0.2-1.fc43.noarch.rpm",
-    "sha256": "8f4b2360d22d31475afcc40448ce10597c3b94b1e618a2f8b97a23210b987970",
-    "size": 24548
+    "sha256": "cd90d6e54588e95d79089e93161eec6539829b29e9bad23093878dbcfd17b5c5",
+    "size": 24512
   },
   "flightctl-selinux-1.1.0-1.fc43.noarch.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.1.0/flightctl-selinux-1.1.0-1.fc43.noarch.rpm",
-    "sha256": "29e4073aff44e5879ac4aafef42485912f7afaaa5b490dea7199d27e6354bbde",
-    "size": 23506
+    "sha256": "e5c112856cec1dd35571f879ba32ce9cd003932974c1f381afada3542a757839",
+    "size": 23482
   },
   "flightctl-selinux-1.1.0~rc1-1.fc43.noarch.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.1.0-rc1/flightctl-selinux-1.1.0.rc1-1.fc43.noarch.rpm",
-    "sha256": "bdb0324561c37717d03f5bbfa9b61b5088fb0d87fb5815b3078e4477ceb30e69",
-    "size": 23521
+    "sha256": "239acc018bc479a3bcca90bf1b40ab186ed4d2e9367433d97c09b78822047e7e",
+    "size": 23485
   },
   "flightctl-selinux-1.1.0~rc2-1.fc43.noarch.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.1.0-rc2/flightctl-selinux-1.1.0.rc2-1.fc43.noarch.rpm",
-    "sha256": "8a691788fc1fefc7e2793267949a06135a1667032f4318be17b3537de0c8b41b",
-    "size": 23502
+    "sha256": "ff7b26280a64fab5bfac26f49a1be2e9d73e1b43ffcb17f35fb19c758bb99220",
+    "size": 23466
   },
   "flightctl-selinux-1.1.0~rc3-1.fc43.noarch.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.1.0-rc3/flightctl-selinux-1.1.0.rc3-1.fc43.noarch.rpm",
-    "sha256": "bca7d9e77a942ebe4cf14259a2aa1556a2d4cd7809a84dae34724fd163702e51",
-    "size": 23584
+    "sha256": "7a6118a3ecd780645e0a53a85f45dbb937eaf86968a1491773868c2093e11904",
+    "size": 23548
   },
   "flightctl-selinux-1.1.0~rc4-1.fc43.noarch.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.1.0-rc4/flightctl-selinux-1.1.0.rc4-1.fc43.noarch.rpm",
-    "sha256": "febf26709b31235441721789245f8919fae1e979095c5ac828c1d4cc91eb977f",
-    "size": 23566
+    "sha256": "c230f707713c9f0b038ebe0b8153f94e20103d5838629762c0264ab67331f11f",
+    "size": 23530
   },
   "flightctl-selinux-1.1.0~rc5-1.fc43.noarch.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.1.0-rc5/flightctl-selinux-1.1.0.rc5-1.fc43.noarch.rpm",
-    "sha256": "7b13574b776c554e46bc281cfec41a4d49f5d7a939c3dd67dd38d00f14534262",
-    "size": 23566
+    "sha256": "d3794becc4fec8e7fecc6ac54f83f1b5320b364607a18f42ee79678b8d36856e",
+    "size": 23530
   },
   "flightctl-selinux-1.1.0~rc6-1.fc43.noarch.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.1.0-rc6/flightctl-selinux-1.1.0.rc6-1.fc43.noarch.rpm",
-    "sha256": "3e2ce75eea8a0f5e344b4714145a904066cefd2d8c07911284ebfc7d41ea23df",
-    "size": 23566
+    "sha256": "9cc633abf0babac2078a2df46da776f204a6f6ed70fc76bd620de8c994c7d2a9",
+    "size": 23530
   },
   "flightctl-selinux-1.1.0~rc7-1.fc43.noarch.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.1.0-rc7/flightctl-selinux-1.1.0.rc7-1.fc43.noarch.rpm",
-    "sha256": "2d311bf3cf92a60d5860246117568bb594f8b0d74a85ffa217ce392d35776eb9",
-    "size": 23566
+    "sha256": "a23d49d20860f71c0628d838d74fad85784db0d1230516cc0d9740f1ad662d57",
+    "size": 23530
   },
   "flightctl-selinux-1.1.1-1.fc43.noarch.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.1.1/flightctl-selinux-1.1.1-1.fc43.noarch.rpm",
-    "sha256": "e0d416e5d1cebff9c986cc62ff6e9d98811702dc01416b571df2cedce90ec5ed",
-    "size": 23518
+    "sha256": "4a94583c228b3bb7701fbc257833ea1f8425a9ed4e90a8771ff643c3d50c68d4",
+    "size": 23482
   },
   "flightctl-selinux-1.1.2-1.fc43.noarch.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.1.2/flightctl-selinux-1.1.2-1.fc43.noarch.rpm",
-    "sha256": "3d8f0ed090828204b0b483ad16e0fa96ea368bdc2aaff2779014daeb1ac5685b",
-    "size": 23514
+    "sha256": "cd4bfc799e06a477b66600776ddc7ff5fca1b60075ca958912886c6d289cc3b1",
+    "size": 23474
   },
   "flightctl-selinux-1.2.0~rc1-1.fc43.noarch.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.2.0-rc1/flightctl-selinux-1.2.0.rc1-1.fc43.noarch.rpm",
