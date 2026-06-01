@@ -331,8 +331,8 @@
   },
   "flightctl-selinux-1.2.0~rc1-1.fc43.noarch.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.2.0-rc1/flightctl-selinux-1.2.0.rc1-1.fc43.noarch.rpm",
-    "sha256": "15b5c1223f98a0750291c35c8f63148f279ee9098ff676b584b12d12ca5fcfb5",
-    "size": 23602
+    "sha256": "4c1916f8692e9ee28019a0774b546a967f0eb1ef919aa7974e0fbd78fe99321f",
+    "size": 23638
   },
   "flightctl-services-0.10.0-1.fc43.aarch64.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v0.10.0/flightctl-services-0.10.0-1.fc43.aarch64.rpm",
