@@ -159,8 +159,7 @@ jobs:
 
           git checkout -b "$BRANCH_NAME"
 
-          # Stage stubs, manifests, repodata, and HTML — never commit full RPM binaries
-          git add '*.rpm' '*/rpm-manifest.json' '*/repodata/' '*.html' '*.repo'
+          git add -A
 
           if git diff --staged --quiet; then
             echo "[INFO] No changes detected"
