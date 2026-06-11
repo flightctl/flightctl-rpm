@@ -114,6 +114,11 @@
     "sha256": "ada7fa1a544f165877aad227e411a533224d7877b3adfb0c4d394d6ee1d8d3fe",
     "size": 6886944
   },
+  "flightctl-agent-1.2.0~rc3-1.fc42.aarch64.rpm": {
+    "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.2.0-rc3/flightctl-agent-1.2.0.rc3-1.fc42.aarch64.rpm",
+    "sha256": "791914d6098e91c1ecc1657879d3b472409771639ad4bb844feb2a9bc29cf553",
+    "size": 6892104
+  },
   "flightctl-cli-0.10.0-1.fc42.aarch64.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v0.10.0/flightctl-cli-0.10.0-1.fc42.aarch64.rpm",
     "sha256": "9b67c20957e90de339d63441dea4ce947673d6cf9622d423eb2256f2833bc5e2",
@@ -229,6 +234,11 @@
     "sha256": "3f068558c53e5a4929ffecac6a569f1328b50799012f1cf18029c6d6d4e036dd",
     "size": 19402159
   },
+  "flightctl-cli-1.2.0~rc3-1.fc42.aarch64.rpm": {
+    "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.2.0-rc3/flightctl-cli-1.2.0.rc3-1.fc42.aarch64.rpm",
+    "sha256": "b4b73ae4b3408b8c96ced9a888e9b0a9616a5edeaaf5c793024e1f967bc70713",
+    "size": 32875310
+  },
   "flightctl-observability-0.10.0-1.fc42.aarch64.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v0.10.0/flightctl-observability-0.10.0-1.fc42.aarch64.rpm",
     "sha256": "e625316cf08c2aad3ee6c64ab4a1db4ff9ed98328e2b8a7c2c7d8cdb2ba53eff",
@@ -318,6 +328,11 @@
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.2.0-rc2/flightctl-observability-1.2.0.rc2-1.fc42.aarch64.rpm",
     "sha256": "b8a81bf8fc876a016eb83a5596a4baac46463d4c91d5fc8e768c3dd2c8885f7e",
     "size": 22989
+  },
+  "flightctl-observability-1.2.0~rc3-1.fc42.aarch64.rpm": {
+    "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.2.0-rc3/flightctl-observability-1.2.0.rc3-1.fc42.aarch64.rpm",
+    "sha256": "68439bafaa077a51fd2a9cec904feabc0ae9bca19ea6a91503019bdd85096235",
+    "size": 22997
   },
   "flightctl-otel-collector-0.9.3-1.1.fc42.aarch64.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v0.9.3/flightctl-otel-collector-0.9.3-1.1.fc42.aarch64.rpm",
@@ -419,6 +434,11 @@
     "sha256": "eaa986a8b99e0d041335db349d48d1ceda87f831c6d0c688d0e832992eec9573",
     "size": 23595
   },
+  "flightctl-selinux-1.2.0~rc3-1.fc42.noarch.rpm": {
+    "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.2.0-rc3/flightctl-selinux-1.2.0.rc3-1.fc42.noarch.rpm",
+    "sha256": "3c9cccf263ded13619b8183eadd0026154ff4cab9b69be084971d5fa1229c207",
+    "size": 23595
+  },
   "flightctl-services-0.10.0-1.fc42.aarch64.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v0.10.0/flightctl-services-0.10.0-1.fc42.aarch64.rpm",
     "sha256": "02d4ef3b7b4ae1c1ede7db701519f3c391f2da9f0dfab1fec040a7693dfda26f",
@@ -508,6 +528,11 @@
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.2.0-rc2/flightctl-services-1.2.0.rc2-1.fc42.aarch64.rpm",
     "sha256": "78e7c4c115b334d1aaab53a766f7481910da5ac30e7b8b6a2f37191b61ba921a",
     "size": 4414862
+  },
+  "flightctl-services-1.2.0~rc3-1.fc42.aarch64.rpm": {
+    "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.2.0-rc3/flightctl-services-1.2.0.rc3-1.fc42.aarch64.rpm",
+    "sha256": "2bdfc4828e1231b155c30a606e41ac4a94c6c6a57666eca2a533e3aca0d39e79",
+    "size": 4425891
   },
   "flightctl-telemetry-gateway-0.10.0-1.fc42.aarch64.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v0.10.0/flightctl-telemetry-gateway-0.10.0-1.fc42.aarch64.rpm",
