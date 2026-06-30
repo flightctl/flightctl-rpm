@@ -119,6 +119,11 @@
     "sha256": "603b2a991de1a8576ead97fbdefa078b62857d67f830720f40158dde7e6ab35b",
     "size": 7557986
   },
+  "flightctl-agent-1.0.3~rc1-1.el9.x86_64.rpm": {
+    "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.0.3-rc1/flightctl-agent-1.0.3.rc1-1.el9.x86_64.rpm",
+    "sha256": "55b0be07a39a17c9c056c84218901cfdf7823f19dc9700b70ba2b12bb40cc9d9",
+    "size": 7749529
+  },
   "flightctl-agent-1.1.0-1.el9.x86_64.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.1.0/flightctl-agent-1.1.0-1.el9.x86_64.rpm",
     "sha256": "258b4f7c888a50fb7ef8b37e286c43f40ca90ceecb886b19577c6cea0cadd682",
@@ -309,6 +314,11 @@
     "sha256": "620afa367866defac4d77160ca3b42ac3f963cf3fc2bbb629ab9ec96a1e8c967",
     "size": 20751368
   },
+  "flightctl-cli-1.0.3~rc1-1.el9.x86_64.rpm": {
+    "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.0.3-rc1/flightctl-cli-1.0.3.rc1-1.el9.x86_64.rpm",
+    "sha256": "e3737c1de903983b293a957f2139c62431c6a1b71e5a8f5eabf7a08098f63035",
+    "size": 21215058
+  },
   "flightctl-cli-1.1.0-1.el9.x86_64.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.1.0/flightctl-cli-1.1.0-1.el9.x86_64.rpm",
     "sha256": "5dca12c357a523ccff913b1c3179785132b55745324838e4cfb37001699fbaf7",
@@ -463,6 +473,11 @@
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.0.2/flightctl-observability-1.0.2-1.el9.x86_64.rpm",
     "sha256": "717a1b18540336b99f2c97c0d66a6c5bcc932978ee27df985b646da2b055fb7a",
     "size": 24849
+  },
+  "flightctl-observability-1.0.3~rc1-1.el9.x86_64.rpm": {
+    "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.0.3-rc1/flightctl-observability-1.0.3.rc1-1.el9.x86_64.rpm",
+    "sha256": "636ea3d219edca7c2b34e03dd1efe08b509e5048313a398ac16a5f153d368255",
+    "size": 24914
   },
   "flightctl-observability-1.1.0-1.el9.x86_64.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.1.0/flightctl-observability-1.1.0-1.el9.x86_64.rpm",
@@ -634,6 +649,11 @@
     "sha256": "581cafde0f6c565c94ee763fa1c972f2b71bdbc03f1ab0660b90f314290c893e",
     "size": 24326
   },
+  "flightctl-selinux-1.0.3~rc1-1.el9.noarch.rpm": {
+    "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.0.3-rc1/flightctl-selinux-1.0.3.rc1-1.el9.noarch.rpm",
+    "sha256": "806651321967b9742488bc0f766a18d00136a389e22084473a79ef54079a8994",
+    "size": 24370
+  },
   "flightctl-selinux-1.1.0-1.el9.noarch.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.1.0/flightctl-selinux-1.1.0-1.el9.noarch.rpm",
     "sha256": "e978e89cff765592a30e158eb9e09f4ee2a3dda76bf57563e0032e5feb39ba51",
@@ -789,6 +809,11 @@
     "sha256": "168135a8c69f1c0f2d55393f23624bd8ad4fa8085fbecc5956e02d39c5d39c76",
     "size": 4988154
   },
+  "flightctl-services-1.0.3~rc1-1.el9.x86_64.rpm": {
+    "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.0.3-rc1/flightctl-services-1.0.3.rc1-1.el9.x86_64.rpm",
+    "sha256": "d8ee9ce192b8b91b5d1d68e41339072d969b444aca8e0c68c584387c6ca6640f",
+    "size": 5095851
+  },
   "flightctl-services-1.1.0-1.el9.x86_64.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.1.0/flightctl-services-1.1.0-1.el9.x86_64.rpm",
     "sha256": "e666541628fef69140026f8be6203ad253f2277fee9584038a2439e12dae5a56",
@@ -928,6 +953,11 @@
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.0.2/flightctl-telemetry-gateway-1.0.2-1.el9.x86_64.rpm",
     "sha256": "afd85ff23548410c50bd99e324a6b4b7704f18da6a2667a8becffdf5a5f23a4b",
     "size": 26228
+  },
+  "flightctl-telemetry-gateway-1.0.3~rc1-1.el9.x86_64.rpm": {
+    "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.0.3-rc1/flightctl-telemetry-gateway-1.0.3.rc1-1.el9.x86_64.rpm",
+    "sha256": "fb018fd460ecdf778d1f8edd02befc1005dd44fffd25ce3ff228077eb5daa036",
+    "size": 26291
   },
   "flightctl-telemetry-gateway-1.1.0~rc1-1.el9.x86_64.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.1.0-rc1/flightctl-telemetry-gateway-1.1.0.rc1-1.el9.x86_64.rpm",
