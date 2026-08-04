@@ -10,6 +10,9 @@ COPR_PROJECT="@redhat-et/flightctl"
 OUTPUT_DIR=".output"
 DEST_DIR="$OUTPUT_DIR/copr-rpms-temp"
 
+ONBOARDING_PKG="flightctl-onboarding"
+ONBOARDING_MIN_VERSION="1.3.0"
+
 # Color output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -20,14 +23,51 @@ log() { echo -e "${BLUE}[INFO]${NC} $1" >&2; }
 success() { echo -e "${GREEN}[SUCCESS]${NC} $1"; }
 error() { echo -e "${RED}[ERROR]${NC} $1"; }
 
+# Compare versions: returns 0 (true) if $1 >= $2 (ignoring pre-release suffixes)
+version_ge() {
+    local ver1="${1#v}" ver2="${2#v}"
+    local base1 base2
+    base1=$(echo "$ver1" | sed 's/[~-].*//')
+    base2=$(echo "$ver2" | sed 's/[~-].*//')
+    printf '%s\n%s\n' "$base2" "$base1" | sort -V | head -1 | grep -qxF "$base2"
+}
+
+# Duplicate noarch RPMs from x86_64 chroot dirs to corresponding aarch64 dirs
+duplicate_noarch_to_aarch64() {
+    local dest_dir=$1
+    local copied=0
+
+    for x86_dir in "$dest_dir"/*-x86_64; do
+        [ -d "$x86_dir" ] || continue
+        local aarch64_dir="${x86_dir%-x86_64}-aarch64"
+        mkdir -p "$aarch64_dir"
+        for noarch_rpm in "$x86_dir"/*.noarch.rpm; do
+            [ -f "$noarch_rpm" ] || continue
+            local rpm_name
+            rpm_name=$(basename "$noarch_rpm")
+            if [ ! -f "$aarch64_dir/$rpm_name" ]; then
+                cp "$noarch_rpm" "$aarch64_dir/$rpm_name"
+                log "  Duplicated $rpm_name to $(basename "$aarch64_dir")"
+                copied=$((copied + 1))
+            fi
+        done
+    done
+
+    if [ $copied -gt 0 ]; then
+        success "Duplicated $copied noarch RPM(s) to aarch64 directories"
+    fi
+}
+
 # Find COPR build for specific version
+# Usage: find_copr_build <version> [package_name]
 find_copr_build() {
     local version="$1"
+    local package_name="${2:-}"
 
     # Remove 'v' prefix if present
     version=${version#v}
 
-    log "Searching for COPR build for version: $version"
+    log "Searching for COPR build for version: $version${package_name:+ (package: $package_name)}"
 
     local builds
     builds=$(copr-cli list-builds "$COPR_PROJECT" --output-format json 2>/dev/null)
@@ -36,11 +76,21 @@ find_copr_build() {
         return 1
     }
 
-    # Check recent successful builds
-    for build_id in $(echo "$builds" | jq -r '.[] | select(.state == "succeeded") | .id' | head -20); do
+    # Check recent successful builds (use higher limit to account for multiple packages)
+    for build_id in $(echo "$builds" | jq -r '.[] | select(.state == "succeeded") | .id' | head -40); do
         # Get build details via API
         local build_details
         build_details=$(curl -s "https://copr.fedorainfracloud.org/api_3/build/$build_id" 2>/dev/null || echo '{}')
+
+        # Filter by package name if specified
+        if [ -n "$package_name" ]; then
+            local build_pkg
+            build_pkg=$(echo "$build_details" | jq -r '.source_package.name // empty' 2>/dev/null)
+            if [ "$build_pkg" != "$package_name" ]; then
+                continue
+            fi
+        fi
+
         local build_version
         build_version=$(echo "$build_details" | jq -r '.source_package.version // empty' 2>/dev/null)
 
@@ -110,7 +160,7 @@ main() {
         exit 1
     fi
 
-    log "Using COPR build ID: $build_id"
+    log "Using COPR build ID: $build_id (flightctl)"
 
     # Get available chroots
     local build_details
@@ -142,7 +192,7 @@ main() {
     rm -rf "$DEST_DIR"
     mkdir -p "$DEST_DIR"
 
-    # Download chroots
+    # Download flightctl chroots
     local success_count=0
     local total_count=0
 
@@ -152,6 +202,42 @@ main() {
             success_count=$((success_count + 1))
         fi
     done
+
+    # Download flightctl-onboarding if version >= 1.3.0
+    if version_ge "$version" "$ONBOARDING_MIN_VERSION"; then
+        log "Version $version >= $ONBOARDING_MIN_VERSION, searching for $ONBOARDING_PKG..."
+
+        local onboarding_build_id
+        if onboarding_build_id=$(find_copr_build "$version" "$ONBOARDING_PKG"); then
+            log "Using COPR build ID: $onboarding_build_id ($ONBOARDING_PKG)"
+
+            local onboarding_details
+            onboarding_details=$(curl -s "https://copr.fedorainfracloud.org/api_3/build/$onboarding_build_id")
+            local onboarding_chroots
+            onboarding_chroots=$(echo "$onboarding_details" | jq -r '.chroots[]')
+
+            local -a onboarding_filtered=()
+            while IFS= read -r chroot; do
+                if [[ "$chroot" =~ ^epel-(9|[1-9][0-9]+)-.*$ ]] || [[ "$chroot" =~ ^fedora-(4[0-9]|[5-9][0-9]|[1-9][0-9]{2,})-.*$ ]]; then
+                    onboarding_filtered+=("$chroot")
+                fi
+            done <<< "$onboarding_chroots"
+
+            for chroot in "${onboarding_filtered[@]}"; do
+                total_count=$((total_count + 1))
+                if download_chroot "$onboarding_build_id" "$chroot" "$DEST_DIR"; then
+                    success_count=$((success_count + 1))
+                fi
+            done
+
+            duplicate_noarch_to_aarch64 "$DEST_DIR"
+        else
+            error "WARNING: $ONBOARDING_PKG build not found for version $version"
+            error "The package may not be published yet for this version."
+        fi
+    else
+        log "Version $version < $ONBOARDING_MIN_VERSION, skipping $ONBOARDING_PKG"
+    fi
 
     # Clean up unwanted RPMs
     log "Cleaning up packages..."

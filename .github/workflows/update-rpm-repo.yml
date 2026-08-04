@@ -72,6 +72,14 @@ jobs:
             exit 1
           fi
 
+          # Check if onboarding packages were downloaded
+          onboarding_rpms=$(find .output/copr-rpms-temp -name "flightctl-onboarding-*.rpm" | wc -l)
+          if [ "$onboarding_rpms" -gt 0 ]; then
+            echo "has_onboarding=true" >> $GITHUB_ENV
+          else
+            echo "has_onboarding=false" >> $GITHUB_ENV
+          fi
+
       - name: Upload RPMs to GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
@@ -89,12 +97,20 @@ jobs:
 
           echo "=== Uploading ${#RPMS[@]} RPMs to GitHub Release $RELEASE_TAG ==="
 
+          # Build release notes from the chroots that were actually downloaded
+          DISTROS=$(find .output/copr-rpms-temp -mindepth 1 -maxdepth 1 -type d -printf '%f\n' \
+            | sed 's/-[^-]*$//' | sort -uV | tr '\n' ', ' | sed 's/,$//' | sed 's/,/, /g')
+          RELEASE_NOTES="FlightCtl ${VERSION} packages for ${DISTROS} (x86_64 and aarch64)."
+          if [ "$has_onboarding" = "true" ]; then
+            RELEASE_NOTES="FlightCtl ${VERSION} packages (including flightctl-onboarding) for ${DISTROS} (x86_64 and aarch64)."
+          fi
+
           if ! gh release view "$RELEASE_TAG" --repo "$REPO" &>/dev/null; then
             echo "Creating release $RELEASE_TAG..."
             gh release create "$RELEASE_TAG" \
               --repo "$REPO" \
               --title "FlightCtl $VERSION" \
-              --notes "FlightCtl ${VERSION} packages for EPEL 9, EPEL 10, Fedora 41, 42, 43 (x86_64 and aarch64)." \
+              --notes "$RELEASE_NOTES" \
               "${RPMS[@]}"
           else
             echo "Release $RELEASE_TAG already exists — uploading missing assets..."
@@ -212,6 +228,11 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "- **Version:** $VERSION" >> $GITHUB_STEP_SUMMARY
           echo "- **Release tag:** [$RELEASE_TAG](https://github.com/flightctl/flightctl-rpm/releases/tag/$RELEASE_TAG)" >> $GITHUB_STEP_SUMMARY
+          if [ "${has_onboarding:-false}" = "true" ]; then
+            echo "- **Packages:** flightctl, flightctl-onboarding" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- **Packages:** flightctl" >> $GITHUB_STEP_SUMMARY
+          fi
           echo "- **Trigger:** ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
 
           if [ "${skip_pr:-false}" = "false" ]; then
