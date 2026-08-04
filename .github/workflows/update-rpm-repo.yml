@@ -97,9 +97,12 @@ jobs:
 
           echo "=== Uploading ${#RPMS[@]} RPMs to GitHub Release $RELEASE_TAG ==="
 
-          RELEASE_NOTES="FlightCtl ${VERSION} packages for EPEL 9, EPEL 10, Fedora 41, 42, 43 (x86_64 and aarch64)."
+          # Build release notes from the chroots that were actually downloaded
+          DISTROS=$(find .output/copr-rpms-temp -mindepth 1 -maxdepth 1 -type d -printf '%f\n' \
+            | sed 's/-[^-]*$//' | sort -uV | tr '\n' ', ' | sed 's/,$//' | sed 's/,/, /g')
+          RELEASE_NOTES="FlightCtl ${VERSION} packages for ${DISTROS} (x86_64 and aarch64)."
           if [ "$has_onboarding" = "true" ]; then
-            RELEASE_NOTES="FlightCtl ${VERSION} packages (including flightctl-onboarding) for EPEL 9, EPEL 10, Fedora 41, 42, 43 (x86_64 and aarch64)."
+            RELEASE_NOTES="FlightCtl ${VERSION} packages (including flightctl-onboarding) for ${DISTROS} (x86_64 and aarch64)."
           fi
 
           if ! gh release view "$RELEASE_TAG" --repo "$REPO" &>/dev/null; then

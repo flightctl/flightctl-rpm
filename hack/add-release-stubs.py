@@ -20,20 +20,20 @@ from pathlib import Path
 
 GITHUB_RELEASES_BASE = "https://github.com/flightctl/flightctl-rpm/releases/download"
 
-CHROOT_TO_REPO = {
-    "epel-9-x86_64":     "epel/9/x86_64",
-    "epel-9-aarch64":    "epel/9/aarch64",
-    "epel-10-x86_64":    "epel/10/x86_64",
-    "epel-10-aarch64":   "epel/10/aarch64",
-    "fedora-41-x86_64":  "fedora/41/x86_64",
-    "fedora-41-aarch64": "fedora/41/aarch64",
-    "fedora-42-x86_64":  "fedora/42/x86_64",
-    "fedora-42-aarch64": "fedora/42/aarch64",
-    "fedora-43-x86_64":  "fedora/43/x86_64",
-    "fedora-43-aarch64": "fedora/43/aarch64",
-}
+SUPPORTED_DISTROS = {"epel", "fedora"}
 
 MANIFEST_FILE = "rpm-manifest.json"
+
+
+def chroot_to_repo(chroot: str) -> str | None:
+    """Derive repo subpath from a COPR chroot name (e.g. 'fedora-43-x86_64' -> 'fedora/43/x86_64')."""
+    parts = chroot.split("-")
+    if len(parts) != 3:
+        return None
+    distro, version, arch = parts
+    if distro not in SUPPORTED_DISTROS:
+        return None
+    return f"{distro}/{version}/{arch}"
 
 _rpm_ts = librpm.TransactionSet()
 _rpm_ts.setVSFlags(
@@ -74,7 +74,7 @@ def main():
             continue
 
         chroot = chroot_dir.name
-        repo_subpath = CHROOT_TO_REPO.get(chroot)
+        repo_subpath = chroot_to_repo(chroot)
         if not repo_subpath:
             print(f"[WARN] Unknown chroot '{chroot}', skipping.")
             continue
