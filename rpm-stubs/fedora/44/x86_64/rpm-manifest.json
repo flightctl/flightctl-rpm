@@ -1,7 +1,37 @@
 {
+  "flightctl-agent-1.3.0~rc1-1.fc44.x86_64.rpm": {
+    "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.3.0-rc1/flightctl-agent-1.3.0.rc1-1.fc44.x86_64.rpm",
+    "sha256": "40dba6552d15d490394a44b8a7645f21d6c1fe537a9a46b21c4d56e198b2984c",
+    "size": 8153596
+  },
+  "flightctl-cli-1.3.0~rc1-1.fc44.x86_64.rpm": {
+    "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.3.0-rc1/flightctl-cli-1.3.0.rc1-1.fc44.x86_64.rpm",
+    "sha256": "45a78c39ea531a820874a1dfab00cec6d5ccd453f024c285b97d1d10c0522db5",
+    "size": 38524678
+  },
+  "flightctl-greenboot-1.3.0~rc1-1.fc44.x86_64.rpm": {
+    "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.3.0-rc1/flightctl-greenboot-1.3.0.rc1-1.fc44.x86_64.rpm",
+    "sha256": "0743820d05333d08b2d2e65226e53296384c5dd8de2a8ec3a89e947dc07900ee",
+    "size": 15600
+  },
+  "flightctl-observability-1.3.0~rc1-1.fc44.x86_64.rpm": {
+    "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.3.0-rc1/flightctl-observability-1.3.0.rc1-1.fc44.x86_64.rpm",
+    "sha256": "65d6302178347077c68b243b98bac6801eb552d73568fa70628829f2dbf6ac57",
+    "size": 23012
+  },
   "flightctl-onboarding-1.3.0~rc1-1.fc44.noarch.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.3.0-rc1/flightctl-onboarding-1.3.0.rc1-1.fc44.noarch.rpm",
     "sha256": "ec6812e5e49e9646fc7c63537a830f2b9ee7abb9560448ed0a3a5d581342be88",
     "size": 463611
+  },
+  "flightctl-selinux-1.3.0~rc1-1.fc44.noarch.rpm": {
+    "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.3.0-rc1/flightctl-selinux-1.3.0.rc1-1.fc44.noarch.rpm",
+    "sha256": "6096a36551ad15f9537c4005e9a00e23668bd4f73b7aa658fd9bcd04604de747",
+    "size": 23624
+  },
+  "flightctl-services-1.3.0~rc1-1.fc44.x86_64.rpm": {
+    "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.3.0-rc1/flightctl-services-1.3.0.rc1-1.fc44.x86_64.rpm",
+    "sha256": "74fb625868285b413be8dce3b9d88eebe6714476c90ffa9e936db1f186534447",
+    "size": 5295424
   }
 }
