@@ -155,7 +155,7 @@ main() {
 
     # Find the build
     local build_id
-    if ! build_id=$(find_copr_build "$version"); then
+    if ! build_id=$(find_copr_build "$version" "flightctl"); then
         error "Failed to find build for version $version"
         exit 1
     fi
