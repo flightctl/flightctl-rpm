@@ -65,9 +65,7 @@ def find_stubs_dirs(repo_root: Path) -> list[tuple[Path, Path]]:
             continue
         rel = stubs_dir.relative_to(stubs_root)
         arch_dir = repo_root / rel
-        if not (arch_dir / "repodata").exists():
-            print(f"[WARN] No repodata dir for {rel}, skipping.")
-            continue
+        arch_dir.mkdir(parents=True, exist_ok=True)
         pairs.append((stubs_dir, arch_dir))
     return pairs
 
