@@ -109,6 +109,11 @@
     "sha256": "6e61d7c97cc896dd6a0ee739d133a22a93b63d1620277fff1bd99ade5127483b",
     "size": 7471732
   },
+  "flightctl-agent-1.3.0~rc2-1.el10.aarch64.rpm": {
+    "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.3.0-rc2/flightctl-agent-1.3.0.rc2-1.el10.aarch64.rpm",
+    "sha256": "9d6e295a2194930fb58a32877821b9f35ab0090700a31fa3137b4f8e86cbdc6d",
+    "size": 7476954
+  },
   "flightctl-cli-0.10.0-1.el10.aarch64.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v0.10.0/flightctl-cli-0.10.0-1.el10.aarch64.rpm",
     "sha256": "675401e07fc2acc46265bb5f9b8b5f44d23fe6d00c2a9c58e26d53fdf6c60cc3",
@@ -219,9 +224,19 @@
     "sha256": "f1e8577e0082ad9d27d334bd6c5306c84fd39c4619582c6bb15f29c6de2801cc",
     "size": 35024488
   },
+  "flightctl-cli-1.3.0~rc2-1.el10.aarch64.rpm": {
+    "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.3.0-rc2/flightctl-cli-1.3.0.rc2-1.el10.aarch64.rpm",
+    "sha256": "e6b21fdf7896592f40dfaf5eadf2dc896446724800654a5c43495add9a708f83",
+    "size": 35025315
+  },
   "flightctl-greenboot-1.3.0~rc1-1.el10.aarch64.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.3.0-rc1/flightctl-greenboot-1.3.0.rc1-1.el10.aarch64.rpm",
     "sha256": "228f82b86a60602d0c6e7074bf60984d7ce4724b020bb8f769ac354a52dfe78f",
+    "size": 15580
+  },
+  "flightctl-greenboot-1.3.0~rc2-1.el10.aarch64.rpm": {
+    "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.3.0-rc2/flightctl-greenboot-1.3.0.rc2-1.el10.aarch64.rpm",
+    "sha256": "d09c58a2fe81b06524fc528d0149ecce483abff72ecdaa32f2912e9ca25fb7d8",
     "size": 15580
   },
   "flightctl-observability-0.10.0-1.el10.aarch64.rpm": {
@@ -334,10 +349,20 @@
     "sha256": "5dcb561fbabb3bf05d1a3ccc00f82656a95f28c4b7db30b55f02d7ce97a8b444",
     "size": 22986
   },
+  "flightctl-observability-1.3.0~rc2-1.el10.aarch64.rpm": {
+    "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.3.0-rc2/flightctl-observability-1.3.0.rc2-1.el10.aarch64.rpm",
+    "sha256": "afc694d333b80e7c260d554f241c00fa3c2502d8f808e8d1d78ac4f2569c271b",
+    "size": 22986
+  },
   "flightctl-onboarding-1.3.0~rc1-1.el10.noarch.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.3.0-rc1/flightctl-onboarding-1.3.0.rc1-1.el10.noarch.rpm",
     "sha256": "f0ca1780891484205884ecdf06a8f1429b753912836bf79282e979aa03b08c1c",
     "size": 463362
+  },
+  "flightctl-onboarding-1.3.0~rc2-1.el10.noarch.rpm": {
+    "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.3.0-rc2/flightctl-onboarding-1.3.0.rc2-1.el10.noarch.rpm",
+    "sha256": "3c8350dfd05417f6dadf804a55a9e7c4216cd957f929582ac04e4ffc616ff94b",
+    "size": 463354
   },
   "flightctl-selinux-0.10.0-1.el10.noarch.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v0.10.0/flightctl-selinux-0.10.0-1.el10.noarch.rpm",
@@ -449,6 +474,11 @@
     "sha256": "dd5fd935ac4ac8eeb9803c450421ca159903e654688efea376f1c91fd7904b32",
     "size": 23514
   },
+  "flightctl-selinux-1.3.0~rc2-1.el10.noarch.rpm": {
+    "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.3.0-rc2/flightctl-selinux-1.3.0.rc2-1.el10.noarch.rpm",
+    "sha256": "b5b5c9354ae09c04f7e8f8f0440daa42faa4031a00f31e1da0f4c9e11fd967e0",
+    "size": 23514
+  },
   "flightctl-services-0.10.0-1.el10.aarch64.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v0.10.0/flightctl-services-0.10.0-1.el10.aarch64.rpm",
     "sha256": "78c9ab1690f12d26d929b413046d640cd446855526b416386e61bb1955cae913",
@@ -558,6 +588,11 @@
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.3.0-rc1/flightctl-services-1.3.0.rc1-1.el10.aarch64.rpm",
     "sha256": "0893544d20182d4b8cf463e4c1bf79f55de97f21f49946113a15b72b3328d603",
     "size": 4853562
+  },
+  "flightctl-services-1.3.0~rc2-1.el10.aarch64.rpm": {
+    "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.3.0-rc2/flightctl-services-1.3.0.rc2-1.el10.aarch64.rpm",
+    "sha256": "5e17aa2c36ee9dbd961202d4a641c77aeb9930fe719792cb946d95a4461520d2",
+    "size": 4853633
   },
   "flightctl-telemetry-gateway-0.10.0-1.el10.aarch64.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v0.10.0/flightctl-telemetry-gateway-0.10.0-1.el10.aarch64.rpm",
