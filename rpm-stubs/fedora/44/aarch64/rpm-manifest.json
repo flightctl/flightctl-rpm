@@ -14,6 +14,11 @@
     "sha256": "eb2415bc1f5bf9820e358ab5e267dcdec7439ef9ff33541ba02ea148a686e5e7",
     "size": 7258890
   },
+  "flightctl-agent-1.3.0~rc4-1.fc44.aarch64.rpm": {
+    "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.3.0-rc4/flightctl-agent-1.3.0.rc4-1.fc44.aarch64.rpm",
+    "sha256": "267cd168a318eb4e53fe8e01e59c4e4ebeaed9ed92b5b007163cc1b32f659876",
+    "size": 7258354
+  },
   "flightctl-cli-1.3.0~rc1-1.fc44.aarch64.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.3.0-rc1/flightctl-cli-1.3.0.rc1-1.fc44.aarch64.rpm",
     "sha256": "50300ea656a622e90620a2c0e0621a4366012f203a1cf67cd97eb4e7b2685517",
@@ -28,6 +33,11 @@
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.3.0-rc3/flightctl-cli-1.3.0.rc3-1.fc44.aarch64.rpm",
     "sha256": "6e5e80bf1910450eea7a7a46f703c5ef14f16fed6d8b4069ad62a05d516f2969",
     "size": 34142798
+  },
+  "flightctl-cli-1.3.0~rc4-1.fc44.aarch64.rpm": {
+    "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.3.0-rc4/flightctl-cli-1.3.0.rc4-1.fc44.aarch64.rpm",
+    "sha256": "856a0d2bec0d5194face336343c5a99873f30d52b533780154c522ac15138791",
+    "size": 34152032
   },
   "flightctl-greenboot-1.3.0~rc1-1.fc44.aarch64.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.3.0-rc1/flightctl-greenboot-1.3.0.rc1-1.fc44.aarch64.rpm",
@@ -44,6 +54,11 @@
     "sha256": "7b4dbcaa815c59dcf639ff4863bf8744fcb73fd3d0894d04efefb51dadff795a",
     "size": 15580
   },
+  "flightctl-greenboot-1.3.0~rc4-1.fc44.aarch64.rpm": {
+    "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.3.0-rc4/flightctl-greenboot-1.3.0.rc4-1.fc44.aarch64.rpm",
+    "sha256": "bdb9620610c69cb3a10baf790b84029815bf958139a9b86cab6f72180ba3989d",
+    "size": 15580
+  },
   "flightctl-observability-1.3.0~rc1-1.fc44.aarch64.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.3.0-rc1/flightctl-observability-1.3.0.rc1-1.fc44.aarch64.rpm",
     "sha256": "a302ff290a92bbff58f6679f5599eb4274dad4a3efc3a30c70daec5c441179da",
@@ -57,6 +72,11 @@
   "flightctl-observability-1.3.0~rc3-1.fc44.aarch64.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.3.0-rc3/flightctl-observability-1.3.0.rc3-1.fc44.aarch64.rpm",
     "sha256": "07c331e287e35fdaf980c1032fb001ab383ac826d06b0031a8bb769db1ddcd6d",
+    "size": 22987
+  },
+  "flightctl-observability-1.3.0~rc4-1.fc44.aarch64.rpm": {
+    "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.3.0-rc4/flightctl-observability-1.3.0.rc4-1.fc44.aarch64.rpm",
+    "sha256": "a00df9297756c07fa6092245181cf0954de3e007a64e68d631e256c12f18b227",
     "size": 22987
   },
   "flightctl-onboarding-1.3.0~rc1-1.fc44.noarch.rpm": {
@@ -89,6 +109,11 @@
     "sha256": "bf53fe8b666b68f8c879078a52debf9dfdc708c9723d10ae569be9979c58a5e4",
     "size": 23624
   },
+  "flightctl-selinux-1.3.0~rc4-1.fc44.noarch.rpm": {
+    "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.3.0-rc4/flightctl-selinux-1.3.0.rc4-1.fc44.noarch.rpm",
+    "sha256": "be973651547bcde649498b9be7ec0db168c014480d08aea9d62f33351121bb58",
+    "size": 23624
+  },
   "flightctl-services-1.3.0~rc1-1.fc44.aarch64.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.3.0-rc1/flightctl-services-1.3.0.rc1-1.fc44.aarch64.rpm",
     "sha256": "860c2b0db2ab570d985269ccba714ffa2535e5bf10f5dc62c3cdecf4d327905e",
@@ -103,5 +128,10 @@
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.3.0-rc3/flightctl-services-1.3.0.rc3-1.fc44.aarch64.rpm",
     "sha256": "d199a738138ec357bfa3beca43db7073d364a5ba8aec3c62b870447a461e71e3",
     "size": 4688497
+  },
+  "flightctl-services-1.3.0~rc4-1.fc44.aarch64.rpm": {
+    "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.3.0-rc4/flightctl-services-1.3.0.rc4-1.fc44.aarch64.rpm",
+    "sha256": "2fc06ef8f4a46c48268cd25dc88e875ee2d36454dfc616b08decb1e84202f678",
+    "size": 4690408
   }
 }
