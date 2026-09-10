@@ -1,4 +1,9 @@
 {
+  "flightctl-agent-1.1.4-1.fc44.aarch64.rpm": {
+    "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.1.4/flightctl-agent-1.1.4-1.fc44.aarch64.rpm",
+    "sha256": "3f74d10e63483eeb97e246267cdd9e5a62b8c8bee350f15d6e2af235f1ce7d17",
+    "size": 6975333
+  },
   "flightctl-agent-1.1.4~rc1-1.fc44.aarch64.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.1.4-rc1/flightctl-agent-1.1.4.rc1-1.fc44.aarch64.rpm",
     "sha256": "f69fd0df8d22608a9f8c6d67518b1ac4338111db34b3f36db0db889f00e65777",
@@ -33,6 +38,11 @@
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.3.0-rc4/flightctl-agent-1.3.0.rc4-1.fc44.aarch64.rpm",
     "sha256": "267cd168a318eb4e53fe8e01e59c4e4ebeaed9ed92b5b007163cc1b32f659876",
     "size": 7258354
+  },
+  "flightctl-cli-1.1.4-1.fc44.aarch64.rpm": {
+    "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.1.4/flightctl-cli-1.1.4-1.fc44.aarch64.rpm",
+    "sha256": "00dd7dd298323f5fa1a4a7eec16f28885f7fc8fc5bc5995afa0269b724fc7576",
+    "size": 15137244
   },
   "flightctl-cli-1.1.4~rc1-1.fc44.aarch64.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.1.4-rc1/flightctl-cli-1.1.4.rc1-1.fc44.aarch64.rpm",
@@ -94,6 +104,11 @@
     "sha256": "bdb9620610c69cb3a10baf790b84029815bf958139a9b86cab6f72180ba3989d",
     "size": 15580
   },
+  "flightctl-observability-1.1.4-1.fc44.aarch64.rpm": {
+    "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.1.4/flightctl-observability-1.1.4-1.fc44.aarch64.rpm",
+    "sha256": "e54eda06d34f5f548a4906d31478219467640dcb3d65df21034b69db5e1dbccf",
+    "size": 22926
+  },
   "flightctl-observability-1.1.4~rc1-1.fc44.aarch64.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.1.4-rc1/flightctl-observability-1.1.4.rc1-1.fc44.aarch64.rpm",
     "sha256": "8dd1cb6ed223ccb12aead2d2536c9f09f7ef41bb8367d892e27efc82bf1190c9",
@@ -149,6 +164,11 @@
     "sha256": "02e6c7e6a53a6651902250ac21b81427ad058d95d2f4fc20a9ff93cc69ca1601",
     "size": 463551
   },
+  "flightctl-selinux-1.1.4-1.fc44.noarch.rpm": {
+    "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.1.4/flightctl-selinux-1.1.4-1.fc44.noarch.rpm",
+    "sha256": "7371ce270d5a73c2c8eb834941dbf3b0675028a473156882b68882a97417aa02",
+    "size": 23498
+  },
   "flightctl-selinux-1.1.4~rc1-1.fc44.noarch.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.1.4-rc1/flightctl-selinux-1.1.4.rc1-1.fc44.noarch.rpm",
     "sha256": "2c442d50ba6426553fbdbba32a8911a2d2cb1e9d655c26a4c0ffcad6272f6e92",
@@ -183,6 +203,11 @@
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.3.0-rc4/flightctl-selinux-1.3.0.rc4-1.fc44.noarch.rpm",
     "sha256": "be973651547bcde649498b9be7ec0db168c014480d08aea9d62f33351121bb58",
     "size": 23624
+  },
+  "flightctl-services-1.1.4-1.fc44.aarch64.rpm": {
+    "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.1.4/flightctl-services-1.1.4-1.fc44.aarch64.rpm",
+    "sha256": "e48a30285227b5d9132f3d3c41009a3f02983ef218d1dab31726e76111e6b934",
+    "size": 4473018
   },
   "flightctl-services-1.1.4~rc1-1.fc44.aarch64.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.1.4-rc1/flightctl-services-1.1.4.rc1-1.fc44.aarch64.rpm",
