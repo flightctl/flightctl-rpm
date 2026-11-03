@@ -509,6 +509,11 @@
     "sha256": "48aa90a050479013e6fc8407bc941b015c225b0dfcec5e84095fbff756cd0ff5",
     "size": 463550
   },
+  "flightctl-onboarding-1.3.2~rc1-1.fc43.noarch.rpm": {
+    "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v1.3.2-rc1/flightctl-onboarding-1.3.2.rc1-1.fc43.noarch.rpm",
+    "sha256": "218a50cf71e9339d2bfcface9b056cfbbcdeca87ee505d83c4bb0220c213ca23",
+    "size": 463548
+  },
   "flightctl-otel-collector-0.9.3-1.1.fc43.aarch64.rpm": {
     "href": "https://github.com/flightctl/flightctl-rpm/releases/download/v0.9.3/flightctl-otel-collector-0.9.3-1.1.fc43.aarch64.rpm",
     "sha256": "2f4b16b563ae7b50f271a6c3ede29a5be0e24c47aece6cb7674738e9ae5dc3f4",
